@@ -35,12 +35,6 @@ html {
     scroll-padding-top: calc(var(--nav-height) + 24px);
     scrollbar-color: var(--line-strong) var(--canvas);
     scrollbar-width: thin;
-    /* Stops an overscroll/rubber-band at the very top or bottom of the
-       page from chaining into browser-level gestures (like iOS Safari's
-       address-bar show/hide or pull-to-refresh) — a separate source of
-       jank from the lightbox's own scroll lock, and purely behavioral
-       (no layout impact, so nothing shifts visually). */
-    overscroll-behavior-y: contain;
 }
 
 ::-webkit-scrollbar {
@@ -115,6 +109,38 @@ img {
 :focus-visible {
     outline: 2px solid var(--coral);
     outline-offset: 3px;
+}
+
+/* Visually hidden but still announced by screen readers. */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    z-index: 3000;
+    background: var(--coral);
+    color: #1c0e08;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+    top: 16px;
 }
 
 .reveal {
@@ -436,8 +462,14 @@ img {
     animation-name: marqueeDown;
 }
 
-.hero-marquee:hover .marquee-track {
-    animation-play-state: paused;
+/* Only devices with real hover (mouse/trackpad) get :hover treated this
+   way. On touch devices, tapping an image triggers :hover with no
+   corresponding mouseleave to clear it, so the marquee would permanently
+   freeze after the first tap. */
+@media (hover: hover) {
+    .hero-marquee:hover .marquee-track {
+        animation-play-state: paused;
+    }
 }
 
 .marquee-track img {
@@ -685,9 +717,15 @@ img {
     line-height: 1.05;
 }
 
+.contact-email-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 36px;
+}
+
 .contact-email {
     display: inline-block;
-    margin-top: 36px;
     font-size: clamp(1.1rem, 2.4vw, 1.5rem);
     text-decoration: none;
     border-bottom: 1px solid var(--line-strong);
@@ -698,6 +736,74 @@ img {
 .contact-email:hover {
     color: var(--coral);
     border-color: var(--coral);
+}
+
+.email-copy-btn {
+    position: relative;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 100px;
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.email-copy-btn:hover,
+.email-copy-btn:focus-visible {
+    border-color: var(--coral);
+    color: var(--coral);
+}
+
+.email-copy-btn .icon-check {
+    display: none;
+}
+
+.email-copy-btn.copied {
+    border-color: var(--teal);
+    color: var(--teal);
+}
+
+.email-copy-btn.copied .icon-copy {
+    display: none;
+}
+
+.email-copy-btn.copied .icon-check {
+    display: block;
+}
+
+.email-copy-tooltip {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 100px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.email-copy-btn.copied .email-copy-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .email-copy-btn,
+    .email-copy-tooltip {
+        transition: none;
+    }
 }
 
 .contact-links {
@@ -817,7 +923,14 @@ img {
     /* Hug the image's own rendered width instead of stretching to fill a
        fixed grid column — that fixed-width column was what left black
        letterbox bars on either side of portrait-oriented posters. */
-    flex: 0 1 auto;
+    flex: 0 0 auto;
+    /* flex-shrink must stay 0: overflow:hidden makes this item's automatic
+       minimum size resolve to 0 per spec, so with shrink enabled the flex
+       algorithm was free to squeeze this box smaller than the image
+       actually needs whenever image+text together exceeded the panel's
+       max-height — and overflow:hidden would then crop the image to fit.
+       The text panel below has its own scrollbar for exactly this
+       situation; the image should never be the one that gives. */
     max-width: 62%;
 }
 
@@ -1004,6 +1117,54 @@ img {
 
 
 /* ============================================================
+   BACK TO TOP
+============================================================ */
+
+.back-to-top {
+    position: fixed;
+    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: 900;
+
+    width: 38px;
+    height: 38px;
+    border-radius: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--canvas-raised);
+    color: var(--text);
+    border: 1px solid var(--line-strong);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+    border-color: var(--coral);
+    color: var(--coral);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .back-to-top {
+        transition: opacity 0.01ms, visibility 0.01ms;
+    }
+}
+
+
+/* ============================================================
    RESPONSIVE
 ============================================================ */
 
@@ -1074,6 +1235,22 @@ img {
 
     .hero-actions .btn {
         flex: 1;
+    }
+}
+
+/* Perf: backdrop-filter and mix-blend-mode are both expensive to
+   recomposite on every scroll frame, which is the main remaining source
+   of scroll roughness on phones. Drop them below this breakpoint — the
+   nav background is already 94% opaque so the blur adds little, and the
+   noise overlay sits at only 3.5% opacity, so losing it isn't noticeable. */
+@media (max-width: 720px) {
+    .nav {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    body::before {
+        display: none;
     }
 }
 

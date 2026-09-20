@@ -9,6 +9,25 @@
 <!-- Favicon: inline SVG, no extra asset file needed. "DB" initials on the
      site's --canvas / --coral colors. -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318191d'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-style='italic' font-weight='600' font-size='28' fill='%23ff5b3a' text-anchor='middle'%3EDB%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#18191d">
+<link rel="canonical" href="https://dahamu.github.io/">
+
+<!-- Structured data: helps search engines associate this page (and its
+     social links) with you specifically, for richer search results. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Daham Bandara",
+  "url": "https://dahamu.github.io/",
+  "jobTitle": "Visual Designer",
+  "sameAs": [
+    "https://www.linkedin.com/in/daham-bandara/",
+    "https://github.com/Dahamu"
+  ]
+}
+</script>
 
 <!-- Open Graph / social preview. -->
 <meta property="og:type" content="website">
@@ -28,6 +47,8 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<a href="#main-content" class="skip-link">Skip to content</a>
 
 <!-- =========================================================
      NAV
@@ -51,7 +72,7 @@
 </header>
 
 
-<main>
+<main id="main-content">
 
   <!-- =========================================================
        HERO
@@ -374,7 +395,7 @@
       <h2 class="contact-title">Let's make<br>something.</h2>
 
       <div class="contact-email-row">
-        <a href="mailto:reach.daham@gmail.com" class="contact-email">reach.daham@gmail.com</a>
+        <a href="mailto:reach.daham@gmail.com?subject=Portfolio%20Inquiry" class="contact-email">reach.daham@gmail.com</a>
         <button type="button" class="email-copy-btn" id="emailCopyBtn" data-email="reach.daham@gmail.com" aria-label="Copy email address">
           <svg class="icon-copy" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="9" y="9" width="12" height="12" rx="2"></rect>
@@ -388,8 +409,8 @@
       </div>
 
       <div class="contact-links">
-        <a href="https://www.linkedin.com/in/daham-bandara/" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="https://github.com/Dahamu" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/daham-bandara/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
+        <a href="https://github.com/Dahamu" target="_blank" rel="noopener">GitHub<span class="sr-only"> (opens in new tab)</span></a>
       </div>
     </div>
   </section>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Daham Bandara — visual design, photo editing and creative work.">
+<title>Daham Bandara — Portfolio</title>
+
+<!-- Favicon: inline SVG, no extra asset file needed. "DB" initials on the
+     site's --canvas / --coral colors. -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318191d'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-style='italic' font-weight='600' font-size='28' fill='%23ff5b3a' text-anchor='middle'%3EDB%3C/text%3E%3C/svg%3E">
+
+<!-- Open Graph / social preview. og:image and og:url are relative here —
+     once this is live at a real domain, swap them for absolute URLs
+     (e.g. https://yourdomain.com/images/glitch-reality.jpg) since some
+     platforms (notably LinkedIn) won't resolve a relative og:image. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Daham Bandara — Portfolio">
+<meta property="og:description" content="Visual design, photo editing and creative work — posters and social graphics for Kingswood College's clubs and societies.">
+<meta property="og:image" content="images/glitch-reality.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Daham Bandara — Portfolio">
+<meta name="twitter:description" content="Visual design, photo editing and creative work.">
+<meta name="twitter:image" content="images/glitch-reality.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- =========================================================
+     NAV
+========================================================== -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">Daham Bandara</a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#work" data-nav="work">Work</a>
+      <a href="#about" data-nav="about">About</a>
+      <a href="#toolkit" data-nav="toolkit">Toolkit</a>
+      <a href="#contact" data-nav="contact">Contact</a>
+    </nav>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="scroll-progress" id="scrollProgress"></div>
+</header>
+
+
+<main>
+
+  <!-- =========================================================
+       HERO
+  ========================================================== -->
+  <section class="hero" id="top">
+    <div class="hero-inner">
+
+      <div class="hero-copy">
+        <p class="hero-kicker">Visual design &amp; photo editing</p>
+
+        <h1 class="hero-title">
+          Hi, I'm <em>Daham Bandara</em>.<br>
+          I make images<br>
+          say more.
+        </h1>
+
+        <p class="hero-lede">
+          Fresh out of A/Levels at Kingswood College, Kandy, spending most
+          nights inside Photoshop. Most of what's here started as a poster
+          request from one of my school's societies — astronomy,
+          aviation, IT, media — and turned into a habit I can't put down.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-solid">See the work</a>
+          <a href="#contact" class="btn btn-line">Say hello</a>
+        </div>
+      </div>
+
+      <div class="hero-marquee" id="heroFrames" aria-hidden="true">
+        <div class="marquee-col marquee-up">
+          <div class="marquee-track">
+            <img src="images/stellar-night.jpg" alt="">
+            <img src="images/aissa-albums-out.jpg" alt="">
+            <img src="images/canopus-astrophysics.jpg" alt="">
+            <img src="images/glitch-reality.jpg" alt="">
+            <img src="images/stellar-night.jpg" alt="">
+            <img src="images/aissa-albums-out.jpg" alt="">
+            <img src="images/canopus-astrophysics.jpg" alt="">
+            <img src="images/glitch-reality.jpg" alt="">
+          </div>
+        </div>
+        <div class="marquee-col marquee-down">
+          <div class="marquee-track">
+            <img src="images/best-of-luck.jpg" alt="" style="object-position: 85% top;">
+            <img src="images/piwisuma-award-ceremony.jpg" alt="">
+            <img src="images/aviation-committee.jpg" alt="">
+            <img src="images/project-warm-hearts.jpg" alt="">
+            <img src="images/best-of-luck.jpg" alt="" style="object-position: 85% top;">
+            <img src="images/piwisuma-award-ceremony.jpg" alt="">
+            <img src="images/aviation-committee.jpg" alt="">
+            <img src="images/project-warm-hearts.jpg" alt="">
+          </div>
+        </div>
+        <div class="marquee-col marquee-up">
+          <div class="marquee-track">
+            <img src="images/seds-galactic-gathering.jpg" alt="">
+            <img src="images/kas-agm.jpg" alt="">
+            <img src="images/luna-24-it-day.jpg" alt="" style="object-position: 70% top;">
+            <img src="images/stellar-night.jpg" alt="">
+            <img src="images/seds-galactic-gathering.jpg" alt="">
+            <img src="images/kas-agm.jpg" alt="">
+            <img src="images/luna-24-it-day.jpg" alt="" style="object-position: 70% top;">
+            <img src="images/stellar-night.jpg" alt="">
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       WORK / GALLERY
+       Real project posters, pulled from Daham's own design work.
+       To add more later: copy a .card block, point the <img> at
+       a new file in /images, and update the data-title / data-desc
+       / data-tags attributes used by the lightbox.
+  ========================================================== -->
+  <section class="section" id="work">
+    <div class="section-inner">
+
+      <div class="section-head reveal">
+        <span class="section-kicker">Portfolio</span>
+        <h2>Selected work</h2>
+        <p>Event posters and social graphics made for my school's clubs and societies. Click any frame for details.</p>
+      </div>
+
+      <div class="gallery" id="gallery">
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Glitch Reality"
+          data-desc="A dystopian, glitch-art take on a system crash — chromatic aberration, fake terminal logs, HUD-style data panels, and distressed type layered over a weeping-angel statue. Made for an inter-school IT design competition."
+          data-tags="Glitch effects, Typography, Photo manipulation"
+          data-frame="01">
+          <div class="card-thumb"><img src="images/glitch-reality.jpg" alt="Glitch Reality dystopian system-crash poster" loading="lazy"></div>
+          <h3>Glitch Reality</h3>
+          <p>A system-crash themed IT competition entry.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="AISSA — Ekka Awurudu Campaign"
+          data-desc="The event campaign for the All Island Schools Science Association's Ekka Awurudu — a warm, duotone photo collage for the album drop, plus the event-day announcement and a physical ticket design in the same mandala-and-florals palette."
+          data-tags="Photo compositing, Collage, Color grading"
+          data-gallery="images/aissa-albums-out.jpg,images/aissa-today-is-the-day.jpg,images/aissa-ticket.jpg"
+          data-frame="02">
+          <div class="card-thumb"><img src="images/aissa-albums-out.jpg" alt="AISSA albums out now poster" loading="lazy"></div>
+          <h3>AISSA — Ekka Awurudu</h3>
+          <p>Event campaign: album drop to ticket.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Piwisuma '24 — Award Ceremony Campaign"
+          data-desc="The full run-up to Kingswood Media Network's award ceremony — a teaser, a date-fixed announcement and an 'await the results' post, all built on the same vintage microphone photo with script and blackletter type for a formal, editorial feel."
+          data-tags="Typography, Photo retouching, Poster design"
+          data-gallery="images/piwisuma-award-ceremony.jpg,images/piwisuma-date-fixed.jpg,images/piwisuma-await-results.jpg,images/piwisuma-concluded.jpg"
+          data-frame="03">
+          <div class="card-thumb"><img src="images/piwisuma-award-ceremony.jpg" alt="Piwisuma 24 award ceremony poster" loading="lazy"></div>
+          <h3>Piwisuma '24</h3>
+          <p>Teaser to results, award season.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Kingswood Aviation — Committee 2025/26"
+          data-desc="An elegant, editorial-style reveal of a club's new leadership committee — a serif wordmark and a clean two-column name list over a dimmed building photo."
+          data-tags="Typography, Grid layout, Editorial design"
+          data-frame="04">
+          <div class="card-thumb"><img src="images/aviation-committee.jpg" alt="Kingswood Aviation committee 2025/26 poster" loading="lazy"></div>
+          <h3>Aviation — Committee reveal</h3>
+          <p>Introducing a club's new committee.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Best of Luck — 2024 Batch"
+          data-desc="A well-wishes poster for the school's A/L examination batch, pairing a founder's statue photo with a bright sky and a Nelson Mandela quote for a warmer, more hopeful tone than the rest of the set."
+          data-tags="Typography, Color grading, Poster design"
+          data-frame="05">
+          <div class="card-thumb"><img src="images/best-of-luck.jpg" alt="Best of Luck 2024 Batch exam wishes poster" loading="lazy" style="object-position: 100% top;"></div>
+          <h3>Best of Luck — 2024 Batch</h3>
+          <p>Exam well-wishes for the graduating batch.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Project Warm Hearts"
+          data-desc="A teaser for a community initiative run by Kingswood and Mahamaya's UNESCO societies — type and color grading laid over a found photograph to keep the focus on the message."
+          data-tags="Typography, Color grading, Campaign design"
+          data-frame="06">
+          <div class="card-thumb"><img src="images/project-warm-hearts.jpg" alt="Project Warm Hearts teaser poster" loading="lazy"></div>
+          <h3>Project Warm Hearts</h3>
+          <p>A community initiative teaser.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Canopus — Introduction to Astrophysics"
+          data-desc="A lecture-series poster for Kingswood Astronomical Society, built around a found night-sky image, a single shaft of light, and a bold condensed wordmark."
+          data-tags="Typography, Poster design, Event branding"
+          data-frame="07">
+          <div class="card-thumb"><img src="images/canopus-astrophysics.jpg" alt="Canopus lecture series poster" loading="lazy"></div>
+          <h3>Canopus — Astrophysics lecture</h3>
+          <p>A lecture-series announcement.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Kingswood Astronomical Society — Annual General Meeting"
+          data-desc="An announcement for the astronomical society's annual general meeting, pairing bold typography over a large numeral background element with a matching crest graphic that sets the school's own emblem beside the society's own seal."
+          data-tags="Typography, Poster design, Branding"
+          data-gallery="images/kas-agm.jpg,images/kas-agm-crests.jpg"
+          data-frame="08">
+          <div class="card-thumb"><img src="images/kas-agm.jpg" alt="Kingswood Astronomical Society annual general meeting poster" loading="lazy"></div>
+          <h3>KAS — Annual General Meeting</h3>
+          <p>An anniversary meeting announcement.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Stellar Night '25"
+          data-desc="The full campaign for the astronomical society's annual observation camp — a burning ring of light over a line of silhouetted figures, built entirely from found elements and grade, carried from the first teaser through to the sponsor thank-you."
+          data-tags="Compositing, Light &amp; glow effects, Color grading"
+          data-gallery="images/stellar-night.jpg,images/stellar-night-registrations-open.jpg,images/stellar-night-save-the-date.jpg,images/stellar-night-concluded.jpg,images/stellar-night-thank-you.jpg"
+          data-frame="09">
+          <div class="card-thumb"><img src="images/stellar-night.jpg" alt="Stellar Night 25 coming soon poster" loading="lazy"></div>
+          <h3>Stellar Night '25</h3>
+          <p>A full event campaign, teaser to thank-you.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="SEDS AGM — Galactic Gathering Campaign"
+          data-desc="The full glassmorphism-styled campaign for SEDS Juniors' annual general meeting — invite through countdown, day-of posts, and a closing thank-you — all built on iridescent 3D star shapes over a frosted-glass card."
+          data-tags="Glassmorphism, 3D elements, Poster design"
+          data-gallery="images/seds-galactic-gathering.jpg,images/seds-date-fixed.jpg,images/seds-2-days.jpg,images/seds-1-day.jpg,images/seds-happening-today.jpg,images/seds-happening-now.jpg,images/seds-thank-you.jpg"
+          data-frame="10">
+          <div class="card-thumb"><img src="images/seds-galactic-gathering.jpg" alt="SEDS AGM Galactic Gathering poster" loading="lazy"></div>
+          <h3>SEDS AGM</h3>
+          <p>Full campaign, invite to thank-you.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Luna '24 — Annual IT Day"
+          data-desc="A two-panel key visual for Kingswood IT Society's annual IT day, pairing a space-station silhouette with a lone figure walking toward a glowing monolith — plus a countdown post from the same campaign."
+          data-tags="Photo blending, Mood &amp; lighting, Layout"
+          data-gallery="images/luna-24-it-day.jpg,images/1-day.jpg"
+          data-frame="11">
+          <div class="card-thumb"><img src="images/luna-24-it-day.jpg" alt="Luna '24 Kingswood College Annual IT Day key visual" loading="lazy" style="object-position: 100% top;"></div>
+          <h3>Luna '24 — Annual IT Day</h3>
+          <p>Kingswood IT Society's annual key visual.</p>
+        </article>
+
+        <article class="card reveal" tabindex="0" role="button" aria-haspopup="dialog"
+          data-title="Kingswood Astronomical Society — Avurudu Greetings"
+          data-desc="A Sinhala &amp; Tamil New Year greeting for Kingswood Astronomical Society — hand-drawn festival motifs, a praying figure and a radiant sun, in warm reds instead of the society's usual deep-space palette."
+          data-tags="Illustration, Cultural design, Color grading"
+          data-frame="12">
+          <div class="card-thumb"><img src="images/kingswood-astro-new-year.jpg" alt="Kingswood Astronomical Society Sinhala and Tamil New Year greeting" loading="lazy"></div>
+          <h3>Avurudu Greetings</h3>
+          <p>A New Year card for the astro society.</p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       ABOUT
+  ========================================================== -->
+  <section class="section section-alt" id="about">
+    <div class="section-inner about-grid">
+
+      <div class="about-copy reveal">
+        <span class="section-kicker">About me</span>
+        <h2>About</h2>
+        <p>
+          I just finished my A/Levels at Kingswood College, Kandy, and
+          Photoshop is where most of my free time goes. It started when I
+          joined the School Media Network — that's the actual turning
+          point — and turned into designing posters and social graphics
+          for my school's societies: astronomy, aviation, IT, media, and
+          a couple of joint community projects along the way.
+        </p>
+        <p>
+          I haven't locked in a direction for after school yet — I'm
+          keeping an open mind and looking into a few different paths.
+          Until then, this site is mostly a place to keep the design
+          work I'm proud of in one spot.
+        </p>
+      </div>
+
+      <div class="about-side reveal">
+        <div class="about-block">
+          <h3>Currently</h3>
+          <ul>
+            <li>Learning: color theory &amp; compositing</li>
+            <li>Main tool: Adobe Photoshop</li>
+            <li>Status: after A/L, exploring paths</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       TOOLKIT — styled like a layers panel
+  ========================================================== -->
+  <section class="section" id="toolkit">
+    <div class="section-inner">
+
+      <div class="section-head reveal">
+        <span class="section-kicker">Skills</span>
+        <h2>Toolkit</h2>
+        <p>What I reach for most, laid out like a layers panel.</p>
+      </div>
+
+      <div class="layers-panel reveal">
+
+        <div class="layer-row" style="--fill: 92%">
+          <span class="layer-name">Poster &amp; event design</span>
+          <div class="layer-track"><div class="layer-fill"></div></div>
+          <span class="layer-value">92%</span>
+        </div>
+
+        <div class="layer-row" style="--fill: 85%">
+          <span class="layer-name">Photo compositing</span>
+          <div class="layer-track"><div class="layer-fill"></div></div>
+          <span class="layer-value">85%</span>
+        </div>
+
+        <div class="layer-row" style="--fill: 80%">
+          <span class="layer-name">Color grading</span>
+          <div class="layer-track"><div class="layer-fill"></div></div>
+          <span class="layer-value">80%</span>
+        </div>
+
+        <div class="layer-row" style="--fill: 78%">
+          <span class="layer-name">Typography &amp; layout</span>
+          <div class="layer-track"><div class="layer-fill"></div></div>
+          <span class="layer-value">78%</span>
+        </div>
+
+        <div class="layer-row" style="--fill: 68%">
+          <span class="layer-name">Retouching</span>
+          <div class="layer-track"><div class="layer-fill"></div></div>
+          <span class="layer-value">68%</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       CONTACT
+  ========================================================== -->
+  <section class="section section-contact" id="contact">
+    <div class="section-inner">
+      <p class="contact-kicker">Have a project or just want to talk shop?</p>
+      <h2 class="contact-title">Let's make<br>something.</h2>
+
+      <a href="mailto:reach.daham@gmail.com" class="contact-email">reach.daham@gmail.com</a>
+
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/daham-bandara/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Dahamu" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+
+<footer class="footer">
+  <div class="section-inner">
+    <div class="footer-inner">
+      <span>Daham Bandara</span>
+      <span>Built in Photoshop, laid out in code.</span>
+    </div>
+    <p class="footer-note">Designs shown here were made as volunteer work for school clubs and societies — not for sale, and I don't make any money from them.</p>
+  </div>
+</footer>
+
+
+<!-- =========================================================
+     PROJECT LIGHTBOX
+========================================================== -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">Close</button>
+    <div class="lightbox-media">
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
+      <img id="lightboxImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7" alt="">
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
+      <span class="lightbox-counter" id="lightboxCounter"></span>
+    </div>
+    <div class="lightbox-text">
+      <h3 id="lightboxTitle">Project title</h3>
+      <p id="lightboxDesc"></p>
+      <div class="lightbox-tags" id="lightboxTags"></div>
+    </div>
+  </div>
+</div>
+
+
+<script src="script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,1094 @@
+/* ============================================================
+   Daham Bandara — PORTFOLIO
+   DESIGN TOKENS
+============================================================ */
+
+:root {
+    --canvas: #18191d;
+    --canvas-raised: #212327;
+    --paper: #f3ecdd;
+    --paper-dim: #e8e0cd;
+    --ink: #1c1811;
+    --text: #f3efe6;
+    --text-dim: #9a978d;
+    --coral: #ff5b3a;
+    --coral-dim: rgba(255, 91, 58, 0.16);
+    --teal: #3e8079;
+    --line: rgba(243, 239, 230, 0.12);
+    --line-strong: rgba(243, 239, 230, 0.22);
+
+    --font-display: "Fraunces", serif;
+    --font-ui: "Space Grotesk", sans-serif;
+
+    --nav-height: 76px;
+    --max: 1160px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--nav-height) + 24px);
+    scrollbar-color: var(--line-strong) var(--canvas);
+    scrollbar-width: thin;
+    /* Stops an overscroll/rubber-band at the very top or bottom of the
+       page from chaining into browser-level gestures (like iOS Safari's
+       address-bar show/hide or pull-to-refresh) — a separate source of
+       jank from the lightbox's own scroll lock, and purely behavioral
+       (no layout impact, so nothing shifts visually). */
+    overscroll-behavior-y: contain;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--canvas);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--coral);
+}
+
+body {
+    background: var(--canvas);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    /* Removes the default gray flash on tap on mobile browsers. Purely
+       cosmetic — the separate :focus-visible rule further down still
+       shows a clear outline for keyboard users, this only affects the
+       touch tap highlight. */
+    -webkit-tap-highlight-color: transparent;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    /* Below .lightbox (2000) so the grain doesn't sit over full-resolution
+       artwork when a project is open, but still above regular page
+       content (nav is 1000) so it keeps its texture everywhere else. */
+    z-index: 1500;
+    pointer-events: none;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+a {
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+::selection {
+    background: var(--coral);
+    color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+:focus-visible {
+    outline: 2px solid var(--coral);
+    outline-offset: 3px;
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* The 3n+2 / 3n+3 stagger only maps to a real diagonal wipe when the
+   gallery is actually 3 columns wide. At 2 or 1 columns (see the
+   responsive rules further down) the same math no longer lines up with
+   the grid, so the delays end up looking random — scope it to the
+   breakpoint where the 3-column layout is actually in effect. */
+@media (min-width: 901px) {
+    .gallery .card.reveal:nth-child(3n+2) { transition-delay: 0.08s; }
+    .gallery .card.reveal:nth-child(3n+3) { transition-delay: 0.16s; }
+}
+
+
+/* ============================================================
+   LAYOUT HELPERS
+============================================================ */
+
+.section-inner {
+    width: min(var(--max), calc(100% - 48px));
+    margin: 0 auto;
+}
+
+.section {
+    padding: 120px 0;
+}
+
+.section-alt {
+    background: var(--canvas-raised);
+}
+
+.section-head {
+    max-width: 520px;
+    margin-bottom: 56px;
+}
+
+.section-kicker {
+    display: block;
+    color: var(--coral);
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+}
+
+.section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    margin-bottom: 12px;
+}
+
+.section-head p {
+    color: var(--text-dim);
+    font-size: 1rem;
+}
+
+
+/* ============================================================
+   NAV
+============================================================ */
+
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+
+    background: rgba(24, 25, 29, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+    border-bottom: 1px solid var(--line);
+}
+
+.scroll-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    height: 2px;
+    width: 0%;
+    background: var(--coral);
+    /* No transition here on purpose: requestAnimationFrame already updates
+       this every frame in script.js, so a CSS transition would fight it
+       and cause lag/stutter instead of smoothing anything out. */
+}
+
+.nav-inner {
+    width: min(var(--max), calc(100% - 48px));
+    height: 100%;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.15rem;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 2px;
+    background: var(--coral);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--text);
+}
+
+.nav-links a:hover::after,
+.nav-links a.active::after {
+    transform: scaleX(1);
+}
+
+.nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.nav-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--text);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-toggle[aria-expanded="true"] span:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+}
+.nav-toggle[aria-expanded="true"] span:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+}
+
+
+/* ============================================================
+   BUTTONS
+============================================================ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 52px;
+    padding: 0 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-solid {
+    background: var(--coral);
+    color: #1c0e08;
+}
+
+.btn-line {
+    border: 1px solid var(--line-strong);
+    color: var(--text);
+}
+
+.btn-line:hover {
+    border-color: var(--coral);
+}
+
+
+/* ============================================================
+   HERO
+============================================================ */
+
+.hero {
+    min-height: 100vh;
+    /* 100vh on iOS Safari is measured against the *largest* possible
+       viewport (address bar hidden), so the hero is taller than the
+       visible area right after load and visibly resizes/jumps as the bar
+       shows/hides during scroll. 100dvh tracks the actual visible
+       viewport instead. Browsers without dvh support just ignore this
+       line and keep the 100vh above — no regression there. */
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    align-items: safe center;
+    padding-top: calc(var(--nav-height) + 40px);
+    padding-bottom: 40px;
+}
+
+.hero-inner {
+    width: min(var(--max), calc(100% - 48px));
+    margin: 0 auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-copy {
+    min-width: 0;
+}
+
+.hero-kicker {
+    color: var(--coral);
+    font-size: 0.95rem;
+    margin-bottom: 22px;
+}
+
+.hero-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 5.6vw, 4.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+}
+
+.hero-title em {
+    font-style: italic;
+    color: var(--coral);
+}
+
+.hero-lede {
+    max-width: 46ch;
+    margin-top: 26px;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 38px;
+}
+
+/* --- contact-sheet marquee: columns auto-scroll opposite directions --- */
+
+.hero-marquee {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    height: 560px;
+    min-width: 0;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+}
+
+.marquee-col {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: marqueeUp 32s linear infinite;
+    /* This is always animating, including while the page scrolls behind
+       it — hint the browser to give it its own compositor layer so that
+       ongoing animation doesn't force a repaint of surrounding content
+       (or vice versa) on every scroll frame. */
+    will-change: transform;
+}
+
+.marquee-down .marquee-track {
+    animation-name: marqueeDown;
+}
+
+.hero-marquee:hover .marquee-track {
+    animation-play-state: paused;
+}
+
+.marquee-track img {
+    width: 100%;
+    aspect-ratio: 1 / 1.1;
+    border-radius: 4px;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    flex-shrink: 0;
+}
+
+@keyframes marqueeUp {
+    from { transform: translateY(0); }
+    to { transform: translateY(-50%); }
+}
+
+@keyframes marqueeDown {
+    from { transform: translateY(-50%); }
+    to { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none;
+    }
+}
+
+
+/* ============================================================
+   GALLERY
+============================================================ */
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+}
+
+.card {
+    cursor: pointer;
+    border-radius: 6px;
+    outline-offset: 4px;
+}
+
+.card-thumb {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: var(--canvas-raised);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+.card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .card-thumb,
+.card:focus-visible .card-thumb {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* While JS is driving the tilt transform on every mousemove frame, let it
+   update instantly instead of racing the 0.35s CSS transition — that race
+   is what was causing the jittery, laggy hover effect. The transition still
+   applies on mouseenter/mouseleave since .is-tilting isn't present yet/anymore. */
+.card-thumb.is-tilting {
+    transition: box-shadow 0.35s ease;
+}
+
+.card:hover .card-thumb img,
+.card:focus-visible .card-thumb img {
+    transform: scale(1.06);
+}
+
+.card h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    margin-bottom: 4px;
+}
+
+.card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+
+/* ============================================================
+   ABOUT
+============================================================ */
+
+.about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr);
+    gap: 64px;
+}
+
+.about-copy h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+    margin-bottom: 24px;
+}
+
+.about-copy p {
+    max-width: 60ch;
+    color: var(--text-dim);
+    font-size: 1.02rem;
+    line-height: 1.75;
+    margin-bottom: 18px;
+}
+
+.about-block {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 8px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.about-block h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+}
+
+.about-block ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.about-block li {
+    font-size: 0.92rem;
+    padding-left: 18px;
+    position: relative;
+}
+
+.about-block li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--coral);
+}
+
+
+/* ============================================================
+   TOOLKIT / LAYERS PANEL
+============================================================ */
+
+.layers-panel {
+    background: var(--canvas-raised);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 12px 24px;
+}
+
+.layer-row {
+    display: grid;
+    grid-template-columns: 180px 1fr 48px;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.layer-row:last-child {
+    border-bottom: 0;
+}
+
+.layer-name {
+    font-size: 0.92rem;
+}
+
+.layer-track {
+    height: 6px;
+    background: rgba(243, 239, 230, 0.08);
+    border-radius: 100px;
+    overflow: hidden;
+}
+
+.layer-fill {
+    height: 100%;
+    width: var(--fill);
+    background: linear-gradient(90deg, var(--teal), var(--coral));
+    border-radius: 100px;
+    transform-origin: left;
+    /* No animation here by default — .layers-panel has the .reveal class,
+       so the fill should only start once script.js's scroll observer adds
+       .in-view to it, not the instant the page loads off-screen. */
+    transform: scaleX(0);
+}
+
+.layers-panel.in-view .layer-fill {
+    animation: fillIn 1s ease forwards;
+}
+
+@keyframes fillIn {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+.layer-value {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ============================================================
+   CONTACT
+============================================================ */
+
+.section-contact {
+    text-align: center;
+}
+
+.contact-kicker {
+    color: var(--text-dim);
+    margin-bottom: 18px;
+}
+
+.contact-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    line-height: 1.05;
+}
+
+.contact-email {
+    display: inline-block;
+    margin-top: 36px;
+    font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+    text-decoration: none;
+    border-bottom: 1px solid var(--line-strong);
+    padding-bottom: 4px;
+    transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.contact-email:hover {
+    color: var(--coral);
+    border-color: var(--coral);
+}
+
+.contact-links {
+    margin-top: 26px;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+.contact-links a {
+    text-decoration: none;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+    transition: color 0.2s ease;
+}
+
+.contact-links a:hover {
+    color: var(--text);
+}
+
+.contact-links a.is-placeholder {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.contact-links a.is-placeholder:hover {
+    color: var(--text-dim);
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer {
+    padding: 32px 0 40px;
+    border-top: 1px solid var(--line);
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+}
+
+.footer-note {
+    margin-top: 16px;
+    color: var(--text-dim);
+    opacity: 0.6;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    max-width: 56ch;
+}
+
+
+/* ============================================================
+   LIGHTBOX
+============================================================ */
+
+.lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+
+    background: rgba(10, 10, 10, 0.7);
+    backdrop-filter: blur(6px);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    /* Defense-in-depth alongside the position:fixed body lock in script.js:
+       stops a touch drag on the dark backdrop itself from scrolling the
+       page underneath on iOS Safari. The scrollable text panel below
+       re-enables its own touch-action so descriptions can still scroll. */
+    touch-action: none;
+}
+
+.lightbox.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lightbox-panel {
+    position: relative;
+    width: min(980px, 100%);
+    max-height: 88vh;
+    max-height: 88dvh; /* see .hero's comment on vh vs dvh on iOS Safari */
+    display: flex;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    /* The .lightbox backdrop disables touch-action entirely to stop the
+       page underneath from scrolling. Re-enabling pan-y only on
+       .lightbox-text meant a swipe starting on the image itself (which,
+       on mobile, occupies the top ~50vh) fell back to the backdrop's
+       "none" and did nothing — this needs to be an ancestor of both the
+       image and the text so a swipe anywhere in the panel scrolls the
+       description. */
+    touch-action: pan-y;
+}
+
+.lightbox-media {
+    position: relative;
+    background: var(--canvas);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 88vh;
+    max-height: 88dvh;
+    overflow: hidden;
+    /* Hug the image's own rendered width instead of stretching to fill a
+       fixed grid column — that fixed-width column was what left black
+       letterbox bars on either side of portrait-oriented posters. */
+    flex: 0 1 auto;
+    max-width: 62%;
+}
+
+.lightbox-media img {
+    max-width: 100%;
+    max-height: 88vh;
+    max-height: 88dvh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    width: 44px;
+    height: 44px;
+    border-radius: 100px;
+    border: 0;
+    background: rgba(10, 10, 10, 0.55);
+    color: #f3efe6;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.lightbox-nav[hidden] {
+    display: none;
+}
+
+.lightbox-nav:hover {
+    background: rgba(10, 10, 10, 0.8);
+}
+
+.lightbox-prev {
+    left: 16px;
+}
+
+.lightbox-next {
+    right: 16px;
+}
+
+.lightbox-counter {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    background: rgba(10, 10, 10, 0.55);
+    color: #f3efe6;
+    font-size: 0.75rem;
+    padding: 5px 12px;
+    border-radius: 100px;
+    backdrop-filter: blur(4px);
+    font-variant-numeric: tabular-nums;
+}
+
+.lightbox-text {
+    flex: 1 1 320px;
+    min-width: 280px;
+    padding: 40px;
+    overflow-y: auto;
+    max-height: 88vh;
+    max-height: 88dvh;
+    /* Smoother momentum scrolling on older iOS Safari for this nested
+       scroll container, and stop an overscroll here from chaining up
+       into the (already-locked) body underneath. */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    /* Custom scrollbar: the site-wide one in :root is tuned for the dark
+       --canvas background and is barely visible on this cream panel,
+       which is why browsers were falling back to their bulky default
+       scrollbar here. Firefox: */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(28, 24, 17, 0.28) transparent;
+}
+
+/* Chromium/WebKit: */
+.lightbox-text::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lightbox-text::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.lightbox-text::-webkit-scrollbar-thumb {
+    background: rgba(28, 24, 17, 0.28);
+    border-radius: 100px;
+}
+
+.lightbox-text::-webkit-scrollbar-thumb:hover {
+    background: var(--coral);
+}
+
+.lightbox-panel h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.6rem;
+    margin-bottom: 16px;
+}
+
+.lightbox-panel p {
+    color: #3a3327;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.lightbox-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.lightbox-tags span {
+    background: rgba(28, 24, 17, 0.08);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 0.8rem;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    background: rgba(10, 10, 10, 0.55);
+    border: 0;
+    border-radius: 100px;
+    color: #f3efe6;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+@media (max-width: 760px) {
+    .lightbox-panel {
+        flex-direction: column;
+        max-height: 92vh;
+        max-height: 92dvh;
+    }
+
+    .lightbox-media {
+        max-height: 50vh;
+        max-height: 50dvh;
+        max-width: 100%;
+        align-self: center;
+        /* Match the panel's own cream background instead of the dark
+           --canvas box. Once the image stopped stretching edge-to-edge
+           and started hugging its own width, that contrasting-color box
+           behind it read as a second card floating inside the first —
+           removing the color contrast fixes that without reintroducing
+           the letterbox bars from before. */
+        background: transparent;
+    }
+
+    .lightbox-media img {
+        max-height: 50vh;
+        max-height: 50dvh;
+    }
+
+    .lightbox-text {
+        /* Was a fixed 50vh regardless of how tall the image actually
+           rendered, which forced an internal scrollbar even when there
+           was plenty of room left. Let it take whatever space remains
+           within the panel's own 92vh cap, and only scroll if the text
+           genuinely doesn't fit. */
+        flex: 1 1 auto;
+        min-height: 0;
+        max-height: none;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media (max-width: 900px) {
+    .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .hero-marquee {
+        max-width: 480px;
+        height: 420px;
+        margin: 0 auto;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .layer-row {
+        grid-template-columns: 120px 1fr 40px;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 720px) {
+    .nav-links {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--canvas);
+        border-bottom: 1px solid var(--line);
+        transform: translateY(-8px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+    }
+
+    .nav-links.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .nav-links a {
+        padding: 16px 24px;
+        border-top: 1px solid var(--line);
+    }
+
+    .nav-toggle {
+        display: flex;
+    }
+
+    .section {
+        padding: 84px 0;
+    }
+
+    .gallery {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions .btn {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .layer-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .layer-value {
+        text-align: left;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        gap: 8px;
+    }
+}

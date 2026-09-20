@@ -121,10 +121,21 @@ document.addEventListener('DOMContentLoaded', () => {
   // One shared rAF-throttled scroll handler instead of separate listeners
   // each scheduling their own frame — fewer redundant callbacks per scroll
   // tick means less work fighting the browser for a smooth 60fps scroll.
+  /* ---------------- Back to top ---------------- */
+
+  const backToTop = document.getElementById('backToTop');
+
+  function updateBackToTop() {
+    // Show once scrolled roughly a screen's worth down, so it doesn't
+    // appear while still in the hero.
+    backToTop?.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
+  }
+
   function onScrollFrame() {
     updateProgress();
     checkBottomOfPage();
     checkTopOfPage();
+    updateBackToTop();
     progressTicking = false;
   }
 
@@ -138,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProgress();
   checkBottomOfPage();
   checkTopOfPage();
+  updateBackToTop();
   // DOMContentLoaded fires before images have laid out, so gallery images
   // still report 0 height and cachedDocHeight comes out too small. Once
   // everything (including lazy images) has actually loaded, the true
@@ -363,6 +375,55 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowLeft') showGalleryImage(galleryIndex - 1);
     if (e.key === 'ArrowRight') showGalleryImage(galleryIndex + 1);
     trapLightboxFocus(e);
+  });
+
+  /* ---------------- Copy email button ---------------- */
+
+  const emailCopyBtn = document.getElementById('emailCopyBtn');
+  let emailCopyResetTimer;
+
+  function showCopiedFeedback() {
+    if (!emailCopyBtn) return;
+    clearTimeout(emailCopyResetTimer);
+    emailCopyBtn.classList.add('copied');
+    emailCopyBtn.setAttribute('aria-label', 'Email address copied');
+    emailCopyResetTimer = setTimeout(() => {
+      emailCopyBtn.classList.remove('copied');
+      emailCopyBtn.setAttribute('aria-label', 'Copy email address');
+    }, 1600);
+  }
+
+  emailCopyBtn?.addEventListener('click', async () => {
+    const email = emailCopyBtn.dataset.email || '';
+    try {
+      // Clipboard API requires a secure context (https/localhost) — GitHub
+      // Pages qualifies, but this can silently be unavailable in other
+      // embedded/dev contexts, hence the fallback below.
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        throw new Error('Clipboard API unavailable');
+      }
+      showCopiedFeedback();
+    } catch {
+      // Fallback: select a temporary offscreen textarea and use the
+      // legacy execCommand copy path.
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = email;
+        temp.style.position = 'fixed';
+        temp.style.opacity = '0';
+        document.body.appendChild(temp);
+        temp.focus();
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showCopiedFeedback();
+      } catch {
+        // Last resort: at least the mailto link right next to this
+        // button still works.
+      }
+    }
   });
 
   /* ---------------- Placeholder links ---------------- */

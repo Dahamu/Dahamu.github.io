@@ -12,11 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeMenu() {
     navLinks.classList.remove('open');
     navToggle.setAttribute('aria-expanded', 'false');
+    navToggle.setAttribute('aria-label', 'Open menu');
   }
 
   navToggle?.addEventListener('click', () => {
     const isOpen = navLinks.classList.toggle('open');
     navToggle.setAttribute('aria-expanded', String(isOpen));
+    navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   });
 
   navLinks?.querySelectorAll('a').forEach(link => {
@@ -416,9 +418,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(temp);
         temp.focus();
         temp.select();
-        document.execCommand('copy');
+        const copied = document.execCommand('copy');
         document.body.removeChild(temp);
-        showCopiedFeedback();
+        if (copied) showCopiedFeedback();
       } catch {
         // Last resort: at least the mailto link right next to this
         // button still works.

@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://dahamu.github.io/sitemap.xml

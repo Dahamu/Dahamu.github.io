@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Daham Bandara — visual design, photo editing and creative work.">
-<title>Daham Bandara — Portfolio</title>
+<meta name="description" content="Daham Bandara — visual designer exploring Computer Science, Cybersecurity and Artificial Intelligence.">
+<title>Daham Bandara — Design, Computer Science &amp; Security</title>
 
 <!-- Favicon: inline SVG, no extra asset file needed. "DB" initials on the
      site's --canvas / --coral colors. -->
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2318191d'/%3E%3Ctext x='32' y='43' font-family='Georgia, serif' font-style='italic' font-weight='600' font-size='28' fill='%23ff5b3a' text-anchor='middle'%3EDB%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#18191d">
+<meta name="author" content="Daham Bandara">
 <link rel="canonical" href="https://dahamu.github.io/">
 
 <!-- Structured data: helps search engines associate this page (and its
@@ -32,9 +33,10 @@
 <!-- Open Graph / social preview. -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Daham Bandara — Portfolio">
-<meta property="og:description" content="Visual design, photo editing and creative work — posters and social graphics for Kingswood College's clubs and societies.">
+<meta property="og:description" content="Creative thinking, technical ambition. Design work for Kingswood College societies, and a developing path into Computer Science, Cybersecurity and AI.">
 <meta property="og:url" content="https://dahamu.github.io/">
 <meta property="og:image" content="https://dahamu.github.io/images/glitch-reality.jpg">
+<meta property="og:image:alt" content="Glitch Reality, a poster by Daham Bandara">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Daham Bandara — Portfolio">
 <meta name="twitter:description" content="Visual design, photo editing and creative work.">
@@ -45,6 +47,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="redesign.css">
+<noscript><style>.reveal{opacity:1;transform:none}.card.reveal .card-thumb img{clip-path:none}.hero-copy>*,.hero-marquee{opacity:1!important}.ln>span{transform:none}</style></noscript>
 </head>
 <body>
 
@@ -55,14 +59,19 @@
 ========================================================== -->
 <header class="nav" id="nav">
   <div class="nav-inner">
-    <a href="#top" class="nav-logo">Daham Bandara</a>
+    <a href="#top" class="nav-logo" aria-label="Daham Bandara, back to top"><span class="nav-mark" aria-hidden="true">DB</span><span class="nav-name">Daham Bandara</span></a>
 
     <nav class="nav-links" id="navLinks">
-      <a href="#work" data-nav="work">Work</a>
       <a href="#about" data-nav="about">About</a>
-      <a href="#toolkit" data-nav="toolkit">Toolkit</a>
+      <a href="#work" data-nav="work">Work</a>
+      <a href="#interests" data-nav="interests">Interests</a>
+      <a href="#skills" data-nav="skills">Skills</a>
+      <a href="#research" data-nav="research">Research</a>
+      <a href="#projects" data-nav="projects">Projects</a>
       <a href="#contact" data-nav="contact">Contact</a>
     </nav>
+
+    <a href="#contact" class="nav-cta">Get in touch</a>
 
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span>
@@ -81,24 +90,16 @@
     <div class="hero-inner">
 
       <div class="hero-copy">
-        <p class="hero-kicker">Visual design &amp; photo editing</p>
-
-        <h1 class="hero-title">
-          Hi, I'm <em>Daham Bandara</em>.<br>
-          I make images<br>
-          say more.
-        </h1>
-
-        <p class="hero-lede">
-          Fresh out of A/Levels at Kingswood College, Kandy, spending most
-          nights inside Photoshop. Most of what's here started as a poster
-          request from one of my school's societies — astronomy,
-          aviation, IT, media — and turned into a habit I can't put down.
-        </p>
-
+        <p class="hero-kicker">Design · Computer Science · Cybersecurity · AI</p>
+        <h1 class="hero-title"><span class="ln"><span>Creative thinking.</span></span><span class="ln"><span><em>Technical ambition.</em></span></span></h1>
+        <p class="hero-statement">Exploring Computer Science, Cybersecurity and Artificial Intelligence while building on a foundation in visual design.</p>
         <div class="hero-actions">
           <a href="#work" class="btn btn-solid">See the work</a>
-          <a href="#contact" class="btn btn-line">Say hello</a>
+          <a href="#about" class="btn btn-line">About me</a>
+        </div>
+        <div class="hero-links">
+          <a href="https://github.com/Dahamu" target="_blank" rel="noopener">GitHub<span class="sr-only"> (opens in new tab)</span></a>
+          <a href="https://www.linkedin.com/in/daham-bandara/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in new tab)</span></a>
         </div>
       </div>
 
@@ -145,6 +146,24 @@
     </div>
   </section>
 
+  <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>Visual design</span><i></i><span>Computer Science</span><i></i><span>Cybersecurity</span><i></i><span>AI Security</span><i></i><span>Secure software</span><i></i><span>Defence technology</span><i></i><span>Visual design</span><i></i><span>Computer Science</span><i></i><span>Cybersecurity</span><i></i><span>AI Security</span><i></i><span>Secure software</span><i></i><span>Defence technology</span><i></i></div></div>
+
+
+
+  <!-- ABOUT -->
+  <section class="section section-paper" id="about">
+    <div class="section-inner split">
+      <div class="split-head reveal">
+        <span class="section-kicker">About</span>
+        <h2>Design first, now building toward technology.</h2>
+      </div>
+      <div class="split-body reveal">
+        <p class="about-lead">I spent years making things people look at. Now I want to understand the systems <em>underneath</em> them.</p>
+        <p>I'm Daham, from Sri Lanka. I've just finished my A/Levels at Kingswood College, and I've spent years in the school Media Network designing posters, editing audio and leading creative work for societies across the school.</p>
+        <p>Design is my strongest practical skill. Technology is where I'm headed: Computer Science, Cybersecurity and AI. I'm at the start of that journey, and I'd rather say so plainly than pretend otherwise. What I bring is visual communication, a habit of finishing things, and a lot of curiosity.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- =========================================================
        WORK / GALLERY
@@ -157,9 +176,9 @@
     <div class="section-inner">
 
       <div class="section-head reveal">
-        <span class="section-kicker">Portfolio</span>
+        <span class="section-kicker">Creative work</span>
         <h2>Selected work</h2>
-        <p>Event posters and social graphics made for my school's clubs and societies. Click any frame for details.</p>
+        <p>Twelve projects: event posters and social graphics made as volunteer work for my school's clubs and societies. Open any frame for the full campaign.</p>
       </div>
 
       <div class="gallery" id="gallery">
@@ -169,7 +188,7 @@
           data-desc="A dystopian, glitch-art take on a system crash — chromatic aberration, fake terminal logs, HUD-style data panels, and distressed type layered over a weeping-angel statue. Made for an inter-school IT design competition."
           data-tags="Glitch effects, Typography, Photo manipulation"
           data-frame="01">
-          <div class="card-thumb"><img src="images/glitch-reality.jpg" alt="Glitch Reality dystopian system-crash poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/glitch-reality.jpg" alt="Glitch Reality dystopian system-crash poster" loading="lazy" decoding="async"></div>
           <h3>Glitch Reality</h3>
           <p>A system-crash themed IT competition entry.</p>
         </article>
@@ -180,7 +199,7 @@
           data-tags="Photo compositing, Collage, Color grading"
           data-gallery="images/aissa-albums-out.jpg,images/aissa-today-is-the-day.jpg,images/aissa-ticket.jpg"
           data-frame="02">
-          <div class="card-thumb"><img src="images/aissa-albums-out.jpg" alt="AISSA albums out now poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/aissa-albums-out.jpg" alt="AISSA albums out now poster" loading="lazy" decoding="async"></div>
           <h3>AISSA — Ekka Awurudu</h3>
           <p>Event campaign: album drop to ticket.</p>
         </article>
@@ -191,7 +210,7 @@
           data-tags="Typography, Photo retouching, Poster design"
           data-gallery="images/piwisuma-award-ceremony.jpg,images/piwisuma-date-fixed.jpg,images/piwisuma-await-results.jpg,images/piwisuma-concluded.jpg"
           data-frame="03">
-          <div class="card-thumb"><img src="images/piwisuma-award-ceremony.jpg" alt="Piwisuma 24 award ceremony poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/piwisuma-award-ceremony.jpg" alt="Piwisuma 24 award ceremony poster" loading="lazy" decoding="async"></div>
           <h3>Piwisuma '24</h3>
           <p>Teaser to results, award season.</p>
         </article>
@@ -201,7 +220,7 @@
           data-desc="An elegant, editorial-style reveal of a club's new leadership committee — a serif wordmark and a clean two-column name list over a dimmed building photo."
           data-tags="Typography, Grid layout, Editorial design"
           data-frame="04">
-          <div class="card-thumb"><img src="images/aviation-committee.jpg" alt="Kingswood Aviation committee 2025/26 poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/aviation-committee.jpg" alt="Kingswood Aviation committee 2025/26 poster" loading="lazy" decoding="async"></div>
           <h3>Aviation — Committee reveal</h3>
           <p>Introducing a club's new committee.</p>
         </article>
@@ -211,7 +230,7 @@
           data-desc="A well-wishes poster for the school's A/L examination batch, pairing a founder's statue photo with a bright sky and a Nelson Mandela quote for a warmer, more hopeful tone than the rest of the set."
           data-tags="Typography, Color grading, Poster design"
           data-frame="05">
-          <div class="card-thumb"><img src="images/best-of-luck.jpg" alt="Best of Luck 2024 Batch exam wishes poster" loading="lazy" style="object-position: 100% top;"></div>
+          <div class="card-thumb"><img src="images/best-of-luck.jpg" alt="Best of Luck 2024 Batch exam wishes poster" loading="lazy" decoding="async" style="object-position: 100% top;"></div>
           <h3>Best of Luck — 2024 Batch</h3>
           <p>Exam well-wishes for the graduating batch.</p>
         </article>
@@ -221,7 +240,7 @@
           data-desc="A teaser for a community initiative run by Kingswood and Mahamaya's UNESCO societies — type and color grading laid over a found photograph to keep the focus on the message."
           data-tags="Typography, Color grading, Campaign design"
           data-frame="06">
-          <div class="card-thumb"><img src="images/project-warm-hearts.jpg" alt="Project Warm Hearts teaser poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/project-warm-hearts.jpg" alt="Project Warm Hearts teaser poster" loading="lazy" decoding="async"></div>
           <h3>Project Warm Hearts</h3>
           <p>A community initiative teaser.</p>
         </article>
@@ -231,7 +250,7 @@
           data-desc="A lecture-series poster for Kingswood Astronomical Society, built around a found night-sky image, a single shaft of light, and a bold condensed wordmark."
           data-tags="Typography, Poster design, Event branding"
           data-frame="07">
-          <div class="card-thumb"><img src="images/canopus-astrophysics.jpg" alt="Canopus lecture series poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/canopus-astrophysics.jpg" alt="Canopus lecture series poster" loading="lazy" decoding="async"></div>
           <h3>Canopus — Astrophysics lecture</h3>
           <p>A lecture-series announcement.</p>
         </article>
@@ -242,7 +261,7 @@
           data-tags="Typography, Poster design, Branding"
           data-gallery="images/kas-agm.jpg,images/kas-agm-crests.jpg"
           data-frame="08">
-          <div class="card-thumb"><img src="images/kas-agm.jpg" alt="Kingswood Astronomical Society annual general meeting poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/kas-agm.jpg" alt="Kingswood Astronomical Society annual general meeting poster" loading="lazy" decoding="async"></div>
           <h3>KAS — Annual General Meeting</h3>
           <p>An anniversary meeting announcement.</p>
         </article>
@@ -253,7 +272,7 @@
           data-tags="Compositing, Light &amp; glow effects, Color grading"
           data-gallery="images/stellar-night.jpg,images/stellar-night-registrations-open.jpg,images/stellar-night-save-the-date.jpg,images/stellar-night-concluded.jpg,images/stellar-night-thank-you.jpg"
           data-frame="09">
-          <div class="card-thumb"><img src="images/stellar-night.jpg" alt="Stellar Night 25 coming soon poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/stellar-night.jpg" alt="Stellar Night 25 coming soon poster" loading="lazy" decoding="async"></div>
           <h3>Stellar Night '25</h3>
           <p>A full event campaign, teaser to thank-you.</p>
         </article>
@@ -264,7 +283,7 @@
           data-tags="Glassmorphism, 3D elements, Poster design"
           data-gallery="images/seds-galactic-gathering.jpg,images/seds-date-fixed.jpg,images/seds-2-days.jpg,images/seds-1-day.jpg,images/seds-happening-today.jpg,images/seds-happening-now.jpg,images/seds-thank-you.jpg"
           data-frame="10">
-          <div class="card-thumb"><img src="images/seds-galactic-gathering.jpg" alt="SEDS AGM Galactic Gathering poster" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/seds-galactic-gathering.jpg" alt="SEDS AGM Galactic Gathering poster" loading="lazy" decoding="async"></div>
           <h3>SEDS AGM</h3>
           <p>Full campaign, invite to thank-you.</p>
         </article>
@@ -275,7 +294,7 @@
           data-tags="Photo blending, Mood &amp; lighting, Layout"
           data-gallery="images/luna-24-it-day.jpg,images/1-day.jpg"
           data-frame="11">
-          <div class="card-thumb"><img src="images/luna-24-it-day.jpg" alt="Luna '24 Kingswood College Annual IT Day key visual" loading="lazy" style="object-position: 100% top;"></div>
+          <div class="card-thumb"><img src="images/luna-24-it-day.jpg" alt="Luna '24 Kingswood College Annual IT Day key visual" loading="lazy" decoding="async" style="object-position: 100% top;"></div>
           <h3>Luna '24 — Annual IT Day</h3>
           <p>Kingswood IT Society's annual key visual.</p>
         </article>
@@ -285,7 +304,7 @@
           data-desc="A Sinhala &amp; Tamil New Year greeting for Kingswood Astronomical Society — hand-drawn festival motifs, a praying figure and a radiant sun, in warm reds instead of the society's usual deep-space palette."
           data-tags="Illustration, Cultural design, Color grading"
           data-frame="12">
-          <div class="card-thumb"><img src="images/kingswood-astro-new-year.jpg" alt="Kingswood Astronomical Society Sinhala and Tamil New Year greeting" loading="lazy"></div>
+          <div class="card-thumb"><img src="images/kingswood-astro-new-year.jpg" alt="Kingswood Astronomical Society Sinhala and Tamil New Year greeting" loading="lazy" decoding="async"></div>
           <h3>Avurudu Greetings</h3>
           <p>A New Year card for the astro society.</p>
         </article>
@@ -296,103 +315,90 @@
   </section>
 
 
-  <!-- =========================================================
-       ABOUT
-  ========================================================== -->
-  <section class="section section-alt" id="about">
-    <div class="section-inner about-grid">
-
-      <div class="about-copy reveal">
-        <span class="section-kicker">About me</span>
-        <h2>About</h2>
-        <p>
-          I just finished my A/Levels at Kingswood College, Kandy, and
-          Photoshop is where most of my free time goes. It started when I
-          joined the School Media Network — that's the actual turning
-          point — and turned into designing posters and social graphics
-          for my school's societies: astronomy, aviation, IT, media, and
-          a couple of joint community projects along the way.
-        </p>
-        <p>
-          I haven't locked in a direction for after school yet — I'm
-          keeping an open mind and looking into a few different paths.
-          Until then, this site is mostly a place to keep the design
-          work I'm proud of in one spot.
-        </p>
+  <!-- TECHNICAL INTERESTS -->
+  <section class="section section-paper" id="interests">
+    <div class="section-inner split">
+      <div class="split-head reveal">
+        <span class="section-kicker">Technical interests</span>
+        <h2>Where I'm pointing my curiosity.</h2>
+        <p>These are interests I'm exploring, not claims of expertise.</p>
       </div>
-
-      <div class="about-side reveal">
-        <div class="about-block">
-          <h3>Currently</h3>
-          <ul>
-            <li>Learning: color theory &amp; compositing</li>
-            <li>Main tool: Adobe Photoshop</li>
-            <li>Status: after A/L, exploring paths</li>
-          </ul>
-        </div>
-      </div>
-
+      <ol class="rows reveal">
+        <li><span class="n">01</span><div><h3>Cybersecurity</h3><p>How systems get attacked and defended. I'm starting with the fundamentals.</p></div><span class="tag-note">Interest</span></li>
+        <li><span class="n">02</span><div><h3>AI Security</h3><p>What changes when software can be persuaded, tricked or manipulated through its inputs.</p></div><span class="tag-note">Interest</span></li>
+        <li><span class="n">03</span><div><h3>Software Engineering</h3><p>Writing software that is clear, maintainable and secure by design.</p></div><span class="tag-note">Learning</span></li>
+        <li><span class="n">04</span><div><h3>Defence Technology</h3><p>The intersection of technology, security and public responsibility.</p></div><span class="tag-note">Interest</span></li>
+      </ol>
     </div>
   </section>
 
-
-  <!-- =========================================================
-       TOOLKIT — styled like a layers panel
-  ========================================================== -->
-  <section class="section" id="toolkit">
+  <!-- SKILLS -->
+  <section class="section section-alt" id="skills">
     <div class="section-inner">
-
       <div class="section-head reveal">
-        <span class="section-kicker">Skills</span>
-        <h2>Toolkit</h2>
-        <p>What I reach for most, laid out like a layers panel.</p>
+        <span class="section-kicker">Skills &amp; toolkit</span>
+        <h2>What I can do, and what I'm learning.</h2>
+        <p>Kept in two groups on purpose.</p>
       </div>
-
-      <div class="layers-panel reveal">
-
-        <div class="layer-row" style="--fill: 92%">
-          <span class="layer-name">Poster &amp; event design</span>
-          <div class="layer-track"><div class="layer-fill"></div></div>
-          <span class="layer-value">92%</span>
+      <div class="skills-grid reveal">
+        <div class="skill-col est">
+          <h3>Established</h3><p class="sub">Used regularly, with real work to show</p>
+          <ul class="chips"><li>Adobe Photoshop</li><li>Poster &amp; event design</li><li>Photo compositing</li><li>Color grading</li><li>Typography &amp; layout</li><li>Photo retouching</li><li>Audio editing</li><li>Media production</li></ul>
         </div>
-
-        <div class="layer-row" style="--fill: 85%">
-          <span class="layer-name">Photo compositing</span>
-          <div class="layer-track"><div class="layer-fill"></div></div>
-          <span class="layer-value">85%</span>
+        <div class="skill-col learn">
+          <h3>Currently learning</h3><p class="sub">Beginner level</p>
+          <ul class="chips"><li>HTML, CSS &amp; JavaScript</li><li>Computer science fundamentals</li><li>Cybersecurity basics</li><li>Software engineering concepts</li><li>AI &amp; machine learning concepts</li></ul>
         </div>
-
-        <div class="layer-row" style="--fill: 80%">
-          <span class="layer-name">Color grading</span>
-          <div class="layer-track"><div class="layer-fill"></div></div>
-          <span class="layer-value">80%</span>
-        </div>
-
-        <div class="layer-row" style="--fill: 78%">
-          <span class="layer-name">Typography &amp; layout</span>
-          <div class="layer-track"><div class="layer-fill"></div></div>
-          <span class="layer-value">78%</span>
-        </div>
-
-        <div class="layer-row" style="--fill: 68%">
-          <span class="layer-name">Retouching</span>
-          <div class="layer-track"><div class="layer-fill"></div></div>
-          <span class="layer-value">68%</span>
-        </div>
-
       </div>
-
     </div>
   </section>
 
+  <!-- RESEARCH INTERESTS -->
+  <section class="section section-paper" id="research">
+    <div class="section-inner split">
+      <div class="split-head reveal">
+        <span class="section-kicker">Research interests</span>
+        <h2>Questions I want to understand better.</h2>
+        <p class="research-note">Topics I'm reading about and want to study. I haven't published any research.</p>
+      </div>
+      <ol class="rows reveal">
+        <li><span class="n">i</span><div><h3>AI Security</h3><p>How AI systems fail, and how they can be made more trustworthy.</p></div></li>
+        <li><span class="n">ii</span><div><h3>Adversarial Machine Learning</h3><p>How models can be misled by carefully crafted inputs.</p></div></li>
+        <li><span class="n">iii</span><div><h3>Prompt Injection</h3><p>Why language-model applications struggle to separate instructions from data.</p></div></li>
+        <li><span class="n">iv</span><div><h3>Cyber Defence</h3><p>Detecting, containing and recovering from attacks.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PROJECTS. To add one, copy the commented <a class="project-card"> below
+       into .project-list and delete the .project-empty block.
+       Only list work that actually exists.
+       <a class="project-card" href="URL" target="_blank" rel="noopener">
+         <h3>Title</h3><span class="status">Completed</span>
+         <p>One honest sentence about what it is and what you learned.</p>
+       </a> -->
+  <section class="section" id="projects">
+    <div class="section-inner split">
+      <div class="split-head reveal">
+        <span class="section-kicker">Projects</span>
+        <h2>Technical work, as it happens.</h2>
+      </div>
+      <div class="project-list reveal">
+        <div class="project-empty">
+          <h3>Nothing here yet, and that's accurate.</h3>
+          <p>My technical journey is just beginning. Finished projects will appear here. Until then, this website is my first one: <a href="https://github.com/Dahamu" target="_blank" rel="noopener">follow along on GitHub</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- =========================================================
        CONTACT
   ========================================================== -->
   <section class="section section-contact" id="contact">
     <div class="section-inner">
-      <p class="contact-kicker">Have a project or just want to talk shop?</p>
-      <h2 class="contact-title">Let's make<br>something.</h2>
+      <p class="contact-kicker">Opportunities, collaborations, or just a conversation.</p>
+      <h2 class="contact-title">Let's make<br>something<span class="dot">.</span></h2>
 
       <div class="contact-email-row">
         <a href="mailto:reach.daham@gmail.com?subject=Portfolio%20Inquiry" class="contact-email">reach.daham@gmail.com</a>
@@ -420,11 +426,35 @@
 
 <footer class="footer">
   <div class="section-inner">
-    <div class="footer-inner">
-      <span>Daham Bandara</span>
-      <span>Built in Photoshop, laid out in code.</span>
+    <div class="footer-wordmark" aria-hidden="true">Daham Bandara</div>
+    <div class="footer-cols">
+      <div>
+        <p class="footer-h">About this site</p>
+        <p>Designs shown here were made as volunteer work for school clubs and societies. They're not for sale, and I don't make any money from them.</p>
+      </div>
+      <div>
+        <p class="footer-h">Explore</p>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#work">Creative work</a></li>
+          <li><a href="#interests">Technical interests</a></li>
+          <li><a href="#projects">Projects</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer-h">Elsewhere</p>
+        <ul>
+          <li><a href="https://github.com/Dahamu" target="_blank" rel="noopener">GitHub<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="https://www.linkedin.com/in/daham-bandara/" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in new tab)</span></a></li>
+          <li><a href="mailto:reach.daham@gmail.com">reach.daham@gmail.com</a></li>
+        </ul>
+      </div>
     </div>
-    <p class="footer-note">Designs shown here were made as volunteer work for school clubs and societies — not for sale, and I don't make any money from them.</p>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Daham Bandara</span>
+      <span>Built in Photoshop, laid out in code.</span>
+      <a href="#top">Back to top <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></a>
+    </div>
   </div>
 </footer>
 
@@ -436,9 +466,9 @@
   <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
     <button class="lightbox-close" id="lightboxClose" aria-label="Close">Close</button>
     <div class="lightbox-media">
-      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image">&#8249;</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev" aria-label="Previous image"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <img id="lightboxImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7" alt="">
-      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image">&#8250;</button>
+      <button class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Next image"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
       <span class="lightbox-counter" id="lightboxCounter"></span>
     </div>
     <div class="lightbox-text">

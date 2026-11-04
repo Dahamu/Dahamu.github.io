@@ -633,70 +633,6 @@ img {
 
 
 /* ============================================================
-   TOOLKIT / LAYERS PANEL
-============================================================ */
-
-.layers-panel {
-    background: var(--canvas-raised);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 12px 24px;
-}
-
-.layer-row {
-    display: grid;
-    grid-template-columns: 180px 1fr 48px;
-    align-items: center;
-    gap: 20px;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--line);
-}
-
-.layer-row:last-child {
-    border-bottom: 0;
-}
-
-.layer-name {
-    font-size: 0.92rem;
-}
-
-.layer-track {
-    height: 6px;
-    background: rgba(243, 239, 230, 0.08);
-    border-radius: 100px;
-    overflow: hidden;
-}
-
-.layer-fill {
-    height: 100%;
-    width: var(--fill);
-    background: linear-gradient(90deg, var(--teal), var(--coral));
-    border-radius: 100px;
-    transform-origin: left;
-    /* No animation here by default — .layers-panel has the .reveal class,
-       so the fill should only start once script.js's scroll observer adds
-       .in-view to it, not the instant the page loads off-screen. */
-    transform: scaleX(0);
-}
-
-.layers-panel.in-view .layer-fill {
-    animation: fillIn 1s ease forwards;
-}
-
-@keyframes fillIn {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-}
-
-.layer-value {
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-}
-
-
-/* ============================================================
    CONTACT
 ============================================================ */
 
@@ -824,14 +760,7 @@ img {
     color: var(--text);
 }
 
-.contact-links a.is-placeholder {
-    opacity: 0.45;
-    cursor: default;
-}
 
-.contact-links a.is-placeholder:hover {
-    color: var(--text-dim);
-}
 
 
 /* ============================================================
@@ -1188,10 +1117,6 @@ img {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .layer-row {
-        grid-template-columns: 120px 1fr 40px;
-        gap: 12px;
-    }
 }
 
 @media (max-width: 720px) {
@@ -1255,14 +1180,7 @@ img {
 }
 
 @media (max-width: 480px) {
-    .layer-row {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
 
-    .layer-value {
-        text-align: left;
-    }
 
     .footer-inner {
         flex-direction: column;

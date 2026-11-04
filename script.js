@@ -21,13 +21,25 @@ document.addEventListener('DOMContentLoaded', () => {
     navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
   });
 
+  // Escape closes the menu (focus returns to the toggle); resizing up to
+  // desktop resets it so it can't be left stuck open.
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navLinks?.classList.contains('open')) {
+      closeMenu();
+      navToggle?.focus();
+    }
+  });
+  window.matchMedia('(min-width: 961px)').addEventListener('change', (e) => {
+    if (e.matches) closeMenu();
+  });
+
   navLinks?.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', closeMenu);
   });
 
   /* ---------------- Active section highlight ---------------- */
 
-  const sections = ['work', 'about', 'toolkit', 'contact']
+  const sections = ['about', 'work', 'interests', 'skills', 'research', 'projects', 'contact']
     .map(id => document.getElementById(id))
     .filter(Boolean);
 
@@ -133,11 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTop?.classList.toggle('visible', window.scrollY > window.innerHeight * 0.6);
   }
 
+  function updateNavState() {
+    document.getElementById('nav')?.classList.toggle('scrolled', window.scrollY > 24);
+  }
+
   function onScrollFrame() {
     updateProgress();
     checkBottomOfPage();
     checkTopOfPage();
     updateBackToTop();
+    updateNavState();
     progressTicking = false;
   }
 
@@ -152,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkBottomOfPage();
   checkTopOfPage();
   updateBackToTop();
+  updateNavState();
   // DOMContentLoaded fires before images have laid out, so gallery images
   // still report 0 height and cachedDocHeight comes out too small. Once
   // everything (including lazy images) has actually loaded, the true
@@ -195,6 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function showGalleryImage(index) {
     galleryIndex = (index + galleryImages.length) % galleryImages.length;
     if (lightboxImage) lightboxImage.src = galleryImages[galleryIndex];
+    // Warm the cache for the next frame so flipping through a campaign is instant.
+    if (galleryImages.length > 1) new Image().src = galleryImages[(galleryIndex + 1) % galleryImages.length];
     const multi = galleryImages.length > 1;
     if (lightboxPrev) lightboxPrev.hidden = !multi;
     if (lightboxNext) lightboxNext.hidden = !multi;
@@ -367,6 +387,17 @@ document.addEventListener('DOMContentLoaded', () => {
     showGalleryImage(galleryIndex + 1);
   });
 
+  // Swipe left/right to flip through a campaign on touch screens.
+  let swipeX = null;
+  const lightboxMedia = lightbox?.querySelector('.lightbox-media');
+  lightboxMedia?.addEventListener('touchstart', (e) => { swipeX = e.touches[0].clientX; }, { passive: true });
+  lightboxMedia?.addEventListener('touchend', (e) => {
+    if (swipeX === null || galleryImages.length < 2) return;
+    const dx = e.changedTouches[0].clientX - swipeX;
+    swipeX = null;
+    if (Math.abs(dx) > 50) showGalleryImage(galleryIndex + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
   lightboxClose?.addEventListener('click', closeLightbox);
   lightbox?.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
@@ -426,15 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
         // button still works.
       }
     }
-  });
-
-  /* ---------------- Placeholder links ---------------- */
-  // Links without a real destination yet (e.g. Behance, until the profile
-  // URL is added) use aria-disabled + a "#" href so they're still visible
-  // and readable, but shouldn't actually navigate — href="#" alone jumps
-  // the page to the top, which reads as broken.
-  document.querySelectorAll('a[aria-disabled="true"]').forEach(link => {
-    link.addEventListener('click', (e) => e.preventDefault());
   });
 
   /* ---------------- Subtle card tilt on hover (desktop only) ---------------- */

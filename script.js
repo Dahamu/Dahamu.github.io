@@ -459,42 +459,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  /* ---------------- Subtle card tilt on hover (desktop only) ---------------- */
-
-  const supportsHover = window.matchMedia('(hover: hover)').matches;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (supportsHover && !reducedMotion) {
-    document.querySelectorAll('.card-thumb').forEach(thumb => {
-      let tiltTicking = false;
-      let pendingX = 0;
-      let pendingY = 0;
-
-      thumb.addEventListener('mouseenter', () => {
-        // JS now owns the transform every frame, so hand off the transition
-        // to CSS only for the "settle" on mouseleave (see below).
-        thumb.classList.add('is-tilting');
-      });
-      thumb.addEventListener('mousemove', (e) => {
-        const rect = thumb.getBoundingClientRect();
-        pendingX = (e.clientX - rect.left) / rect.width - 0.5;
-        pendingY = (e.clientY - rect.top) / rect.height - 0.5;
-        // A raw mousemove can fire far more often than the screen refreshes
-        // (especially on high-poll-rate mice), and each one was writing to
-        // style.transform directly — batch those writes to once per frame.
-        if (!tiltTicking) {
-          requestAnimationFrame(() => {
-            thumb.style.transform = `translateY(-4px) rotateY(${pendingX * 8}deg) rotateX(${-pendingY * 8}deg)`;
-            tiltTicking = false;
-          });
-          tiltTicking = true;
-        }
-      });
-      thumb.addEventListener('mouseleave', () => {
-        thumb.classList.remove('is-tilting');
-        thumb.style.transform = '';
-      });
-    });
-  }
-
 });

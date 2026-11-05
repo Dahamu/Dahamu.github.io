@@ -21,6 +21,18 @@
     --font-ui: "Space Grotesk", sans-serif;
 
     --nav-height: 76px;
+    --space-section: clamp(80px, 10vw, 136px);
+    --paper-ink-dim: #5d5545;
+    --coral-ink: #c2371a;
+    --teal-text: #6fb3aa;
+    --ico-ne: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17L17 7M8 7h9v9'/%3E%3C/svg%3E");
+
+    /* Theme variables: components read these, so cream sections only
+       redefine them once (.section-paper) instead of overriding each rule. */
+    --fg: var(--text);
+    --fg-dim: var(--text-dim);
+    --accent: var(--coral);
+    --rule: var(--line);
     --max: 1160px;
 }
 
@@ -145,7 +157,7 @@ img {
 
 .reveal {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(14px);
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
@@ -154,58 +166,61 @@ img {
     transform: translateY(0);
 }
 
-/* The 3n+2 / 3n+3 stagger only maps to a real diagonal wipe when the
-   gallery is actually 3 columns wide. At 2 or 1 columns (see the
-   responsive rules further down) the same math no longer lines up with
-   the grid, so the delays end up looking random — scope it to the
-   breakpoint where the 3-column layout is actually in effect. */
-@media (min-width: 901px) {
-    .gallery .card.reveal:nth-child(3n+2) { transition-delay: 0.08s; }
-    .gallery .card.reveal:nth-child(3n+3) { transition-delay: 0.16s; }
-}
-
 
 /* ============================================================
-   LAYOUT HELPERS
+   LAYOUT + TYPE SYSTEM
+   One scale: kicker .75rem caps / h2 clamp(2rem-3.1rem) / lead /
+   body 1rem. Section padding comes from --space-section only.
 ============================================================ */
 
-.section-inner {
-    width: min(var(--max), calc(100% - 48px));
-    margin: 0 auto;
-}
+main { counter-reset: sec; }
 
-.section {
-    padding: 120px 0;
-}
+.section-inner { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+.section { padding: var(--space-section) 0; }
+.section-alt { background: var(--canvas-raised); }
 
-.section-alt {
-    background: var(--canvas-raised);
+.section-paper {
+    --fg: var(--ink);
+    --fg-dim: var(--paper-ink-dim);
+    --accent: var(--coral-ink);
+    --rule: rgba(28, 24, 17, 0.16);
+    background: var(--paper);
+    color: var(--fg);
 }
-
-.section-head {
-    max-width: 520px;
-    margin-bottom: 56px;
-}
+.section-paper :focus-visible { outline-color: var(--accent); }
+.section-paper ::selection { background: var(--ink); color: var(--paper); }
 
 .section-kicker {
     display: block;
-    color: var(--coral);
-    font-size: 0.85rem;
-    letter-spacing: 0.02em;
-    margin-bottom: 14px;
+    counter-increment: sec;
+    color: var(--accent);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
 }
+.section-kicker::before { content: "0" counter(sec) "  /  "; color: var(--fg-dim); }
 
-.section-head h2 {
+.section-head { max-width: 560px; margin-bottom: clamp(40px, 6vw, 64px); }
+
+:is(.section-head, .split-head) h2 {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(2rem, 3.4vw, 2.8rem);
-    margin-bottom: 12px;
+    font-size: clamp(2rem, 3.8vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    text-wrap: balance;
 }
+:is(.section-head, .split-head) p { color: var(--fg-dim); max-width: 36ch; }
 
-.section-head p {
-    color: var(--text-dim);
-    font-size: 1rem;
+.split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(36px, 6vw, 72px);
+    align-items: start;
 }
+.split-head { position: sticky; top: calc(var(--nav-height) + 32px); }
 
 
 /* ============================================================
@@ -214,113 +229,40 @@ img {
 
 .nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    inset: 0 0 auto 0;
     height: var(--nav-height);
     z-index: 1000;
-
-    background: rgba(24, 25, 29, 0.94);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid transparent;
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
+/* Transparent over the hero, solid once scrolled. No blur: it cost scroll
+   performance and read as glassmorphism. */
+.nav.scrolled { background: rgba(24, 25, 29, 0.96); border-bottom-color: var(--line); }
 
-.scroll-progress {
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    height: 2px;
-    width: 0%;
-    background: var(--coral);
-    /* No transition here on purpose: requestAnimationFrame already updates
-       this every frame in script.js, so a CSS transition would fight it
-       and cause lag/stutter instead of smoothing anything out. */
-}
+.scroll-progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--coral); }
 
 .nav-inner {
     width: min(var(--max), calc(100% - 48px));
     height: 100%;
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-
-.nav-logo {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 500;
-    font-size: 1.15rem;
-    text-decoration: none;
-}
-
-.nav-links {
-    display: flex;
-    gap: 32px;
-}
-
-.nav-links a {
-    text-decoration: none;
-    color: var(--text-dim);
-    font-size: 0.92rem;
-    position: relative;
-    transition: color 0.2s ease;
-}
-
+.nav-logo { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.15rem; text-decoration: none; }
+.nav-links { display: flex; gap: 28px; }
+.nav-links a { position: relative; text-decoration: none; color: var(--text-dim); font-size: 0.9rem; transition: color 0.2s ease; }
 .nav-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -6px;
-    width: 100%;
-    height: 2px;
-    background: var(--coral);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.25s ease;
+    content: ""; position: absolute; left: 0; bottom: -6px; width: 100%; height: 2px;
+    background: var(--coral); transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
 }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
 
-.nav-links a:hover,
-.nav-links a.active {
-    color: var(--text);
-}
-
-.nav-links a:hover::after,
-.nav-links a.active::after {
-    transform: scaleX(1);
-}
-
-.nav-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    width: 34px;
-    height: 34px;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: 0;
-    cursor: pointer;
-}
-
-.nav-toggle span {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: var(--text);
-    transition: transform 0.25s ease, opacity 0.25s ease;
-}
-
-.nav-toggle[aria-expanded="true"] span:first-child {
-    transform: translateY(3.5px) rotate(45deg);
-}
-.nav-toggle[aria-expanded="true"] span:last-child {
-    transform: translateY(-3.5px) rotate(-45deg);
-}
-
+.nav-toggle { display: none; flex-direction: column; gap: 5px; width: 34px; height: 34px; align-items: center; justify-content: center; background: transparent; border: 0; cursor: pointer; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text); transition: transform 0.25s ease; }
+.nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
 
 /* ============================================================
    BUTTONS
@@ -357,280 +299,155 @@ img {
     border-color: var(--coral);
 }
 
-
 /* ============================================================
    HERO
 ============================================================ */
 
 .hero {
     min-height: 100vh;
-    /* 100vh on iOS Safari is measured against the *largest* possible
-       viewport (address bar hidden), so the hero is taller than the
-       visible area right after load and visibly resizes/jumps as the bar
-       shows/hides during scroll. 100dvh tracks the actual visible
-       viewport instead. Browsers without dvh support just ignore this
-       line and keep the 100vh above — no regression there. */
-    min-height: 100dvh;
+    min-height: 100dvh; /* tracks the visible viewport on iOS Safari */
     display: flex;
     align-items: center;
     align-items: safe center;
-    padding-top: calc(var(--nav-height) + 40px);
-    padding-bottom: 40px;
+    padding: calc(var(--nav-height) + 40px) 0 56px;
 }
-
 .hero-inner {
     width: min(var(--max), calc(100% - 48px));
     margin: 0 auto;
-
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
     gap: 60px;
     align-items: center;
 }
-
-.hero-copy {
-    min-width: 0;
-}
-
-.hero-kicker {
-    color: var(--coral);
-    font-size: 0.95rem;
-    margin-bottom: 22px;
-}
-
+.hero-copy { min-width: 0; }
+.hero-kicker { color: var(--coral); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 22px; }
 .hero-title {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(2.4rem, 5.6vw, 4.4rem);
-    line-height: 1.08;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.5rem, 5.4vw, 4.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
     overflow-wrap: anywhere;
 }
+.hero-title em { font-style: italic; color: var(--coral); }
+.hero-statement { max-width: 44ch; margin-top: 26px; color: var(--text-dim); font-size: 1.05rem; line-height: 1.7; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.hero-links { display: flex; gap: 26px; margin-top: 34px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 44ch; font-size: 0.9rem; }
+.hero-links a { color: var(--text-dim); text-decoration: none; transition: color 0.2s ease; }
+.hero-links a:hover { color: var(--coral); }
 
-.hero-title em {
-    font-style: italic;
-    color: var(--coral);
-}
-
-.hero-lede {
-    max-width: 46ch;
-    margin-top: 26px;
-    color: var(--text-dim);
-    font-size: 1.05rem;
-    line-height: 1.7;
-}
-
-.hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-top: 38px;
-}
-
-/* --- contact-sheet marquee: columns auto-scroll opposite directions --- */
-
+/* contact-sheet marquee: slow, pauses on hover (real-hover devices only) */
 .hero-marquee {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    height: 560px;
-    min-width: 0;
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 35%, black 65%, transparent 100%);
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; height: 560px; min-width: 0; overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
 }
+.marquee-col { position: relative; height: 100%; overflow: hidden; }
+.marquee-track { display: flex; flex-direction: column; gap: 12px; animation: marqueeUp 56s linear infinite; will-change: transform; }
+.marquee-down .marquee-track { animation-name: marqueeDown; }
+@media (hover: hover) { .hero-marquee:hover .marquee-track { animation-play-state: paused; } }
+.marquee-track img { width: 100%; aspect-ratio: 1 / 1.1; border-radius: 2px; object-fit: cover; object-position: top center; flex-shrink: 0; }
+@keyframes marqueeUp { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes marqueeDown { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
 
-.marquee-col {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-}
 
-.marquee-track {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    animation: marqueeUp 32s linear infinite;
-    /* This is always animating, including while the page scrolls behind
-       it — hint the browser to give it its own compositor layer so that
-       ongoing animation doesn't force a repaint of surrounding content
-       (or vice versa) on every scroll frame. */
-    will-change: transform;
-}
+/* ============================================================
+   GALLERY: three staggered columns. The offset middle and right
+   columns give the grid a gentle diagonal rhythm instead of a flat
+   table of cards. Collapses to a plain two-up grid below 900px.
+============================================================ */
 
-.marquee-down .marquee-track {
-    animation-name: marqueeDown;
-}
-
-/* Only devices with real hover (mouse/trackpad) get :hover treated this
-   way. On touch devices, tapping an image triggers :hover with no
-   corresponding mouseleave to clear it, so the marquee would permanently
-   freeze after the first tap. */
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px 24px; }
+.card { cursor: pointer; border-radius: 6px; }
+.card::before { content: "No. " attr(data-frame); display: block; margin-bottom: 12px; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); }
+.card-thumb { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--canvas-raised); border-radius: 6px; margin-bottom: 16px; transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.5s ease, clip-path 1s cubic-bezier(0.2, 0.7, 0.2, 1); }
+/* posters wipe in once as they enter view */
+.card.reveal .card-thumb img { clip-path: inset(0 0 100% 0); }
+.card.reveal.in-view .card-thumb img { clip-path: inset(0); }
+.card:focus-visible .card-thumb { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
+.card:focus-visible .card-thumb img { transform: scale(1.06); }
 @media (hover: hover) {
-    .hero-marquee:hover .marquee-track {
-        animation-play-state: paused;
-    }
+    .card:hover .card-thumb { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); }
+    .card:hover .card-thumb img { transform: scale(1.06); }
 }
+.card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.15rem; line-height: 1.25; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; gap: 12px; transition: color 0.2s ease; }
+.card h3::after { content: ""; flex: none; width: 0.95rem; height: 0.95rem; background: var(--coral); -webkit-mask: var(--ico-ne) center/contain no-repeat; mask: var(--ico-ne) center/contain no-repeat; opacity: 0; transform: translate(-6px, 6px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.card:hover h3, .card:focus-visible h3 { color: var(--coral); }
+.card:hover h3::after, .card:focus-visible h3::after { opacity: 1; transform: none; }
+.card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.5; }
+.card:focus-visible { outline-offset: 4px; }
 
-.marquee-track img {
-    width: 100%;
-    aspect-ratio: 1 / 1.1;
-    border-radius: 4px;
-    object-fit: cover;
-    object-position: top center;
-    display: block;
-    flex-shrink: 0;
-}
-
-@keyframes marqueeUp {
-    from { transform: translateY(0); }
-    to { transform: translateY(-50%); }
-}
-
-@keyframes marqueeDown {
-    from { transform: translateY(-50%); }
-    to { transform: translateY(0); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-        animation: none;
-    }
+@media (min-width: 901px) {
+    .gallery { grid-template-columns: repeat(3, 1fr); gap: 28px 32px; }
+    .card:nth-child(3n+2) { margin-top: 64px; }
+    .card:nth-child(3n+3) { margin-top: 24px; }
 }
 
 
 /* ============================================================
-   GALLERY
+   SECTIONS: about, interests, skills, research, projects
+   Open editorial lists with hairline rules. No pills, no boxes.
 ============================================================ */
 
-.gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
+.about-lead { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.45rem, 2.4vw, 2rem); line-height: 1.3; color: var(--fg); margin-bottom: 28px; }
+.about-lead em { color: var(--accent); }
+.split-body p { color: var(--fg-dim); line-height: 1.75; max-width: 58ch; margin-bottom: 16px; }
+.split-body p.about-lead { color: var(--fg); }
+
+.rows { list-style: none; }
+.rows li { display: grid; grid-template-columns: 56px 1fr auto; gap: 20px; padding: 24px 0; border-top: 1px solid var(--rule); align-items: baseline; }
+.rows li:last-child { border-bottom: 1px solid var(--rule); }
+.rows .n { font-family: var(--font-display); font-style: italic; color: var(--accent); font-size: 1.05rem; }
+.rows h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.45rem; line-height: 1.2; margin-bottom: 6px; }
+.rows p { color: var(--fg-dim); font-size: 0.95rem; max-width: 52ch; }
+.tag-note { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg-dim); white-space: nowrap; }
+
+.skills-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: clamp(36px, 6vw, 72px); }
+.skill-col { border-top: 1px solid var(--rule); padding-top: 24px; }
+.skill-col h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.35rem; margin-bottom: 4px; }
+.skill-col .sub { font-size: 0.85rem; color: var(--fg-dim); margin-bottom: 20px; }
+.learn .sub { color: var(--teal-text); }
+.chips { list-style: none; }
+.est .chips { columns: 2; column-gap: 32px; }
+.chips li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 0.95rem; break-inside: avoid; }
+.learn .chips li { color: var(--fg-dim); }
+
+.project-list { border-top: 1px solid var(--rule); }
+.project-empty { padding: 28px 0; border-bottom: 1px solid var(--rule); }
+.project-empty h3 { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.4rem; margin-bottom: 8px; }
+.project-empty p { color: var(--fg-dim); max-width: 52ch; }
+.project-empty a { color: var(--accent); }
+.project-card { display: grid; grid-template-columns: 1fr auto; gap: 6px 24px; padding: 24px 0; border-bottom: 1px solid var(--rule); text-decoration: none; }
+.project-card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.3rem; transition: color 0.2s ease; }
+.project-card:hover h3 { color: var(--accent); }
+.project-card p { color: var(--fg-dim); font-size: 0.93rem; grid-column: 1; }
+.project-card .status { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-text); }
+
+/* SECTION MARKS: one oversized, faint glyph per section, tied to its topic.
+   about "&" (design & technology) / work "12" (projects) / interests "{ }" /
+   skills "Aa" / research "?" / projects "_" (cursor) / contact "@".
+   Outline on dark sections, soft fill on cream. Decorative: hidden from
+   screen readers via the "/ ''" alt text. */
+#about, #work, #interests, #skills, #research, #projects, #contact { position: relative; overflow: clip; }
+:is(#about, #work, #interests, #skills, #research, #projects, #contact) > .section-inner { position: relative; z-index: 1; }
+:is(#about, #work, #interests, #skills, #research, #projects, #contact)::after {
+    position: absolute; pointer-events: none; white-space: nowrap;
+    font-family: var(--font-display); font-style: italic; font-weight: 500; line-height: 1;
+    font-size: calc(var(--k) * 1vw);
+    color: transparent; -webkit-text-stroke: 1px rgba(243, 239, 230, 0.085);
 }
-
-.card {
-    cursor: pointer;
-    border-radius: 6px;
-    outline-offset: 4px;
-}
-
-.card-thumb {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 16px;
-    background: var(--canvas-raised);
-    transition: transform 0.35s ease, box-shadow 0.35s ease;
-    transform-style: preserve-3d;
-    will-change: transform;
-}
-
-.card-thumb img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: top center;
-    transition: transform 0.5s ease;
-}
-
-.card:hover .card-thumb,
-.card:focus-visible .card-thumb {
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-}
-
-/* While JS is driving the tilt transform on every mousemove frame, let it
-   update instantly instead of racing the 0.35s CSS transition — that race
-   is what was causing the jittery, laggy hover effect. The transition still
-   applies on mouseenter/mouseleave since .is-tilting isn't present yet/anymore. */
-.card-thumb.is-tilting {
-    transition: box-shadow 0.35s ease;
-}
-
-.card:hover .card-thumb img,
-.card:focus-visible .card-thumb img {
-    transform: scale(1.06);
-}
-
-.card h3 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.15rem;
-    margin-bottom: 4px;
-}
-
-.card p {
-    color: var(--text-dim);
-    font-size: 0.9rem;
-}
-
-
-/* ============================================================
-   ABOUT
-============================================================ */
-
-.about-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(240px, 1fr);
-    gap: 64px;
-}
-
-.about-copy h2 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: clamp(2rem, 3.4vw, 2.8rem);
-    margin-bottom: 24px;
-}
-
-.about-copy p {
-    max-width: 60ch;
-    color: var(--text-dim);
-    font-size: 1.02rem;
-    line-height: 1.75;
-    margin-bottom: 18px;
-}
-
-.about-block {
-    background: var(--paper);
-    color: var(--ink);
-    border-radius: 8px;
-    padding: 28px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-}
-
-.about-block h3 {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.1rem;
-    margin-bottom: 14px;
-}
-
-.about-block ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.about-block li {
-    font-size: 0.92rem;
-    padding-left: 18px;
-    position: relative;
-}
-
-.about-block li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 8px;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--coral);
-}
-
+:is(#about, #interests, #research)::after { color: rgba(28, 24, 17, 0.055); -webkit-text-stroke: 0; }
+#about::after     { content: "&";    content: "&" / "";    --k: 38; right: -2vw; bottom: -11vw; }
+#work::after      { content: "12";   content: "12" / "";   --k: 30; right: -1vw; top: 2vw; }
+#interests::after { content: "{ }";  content: "{ }" / "";  --k: 30; left: -2vw; bottom: -9vw; }
+#skills::after    { content: "Aa";   content: "Aa" / "";   --k: 30; right: -1vw; top: -3vw; }
+#research::after  { content: "?";    content: "?" / "";    --k: 38; right: -1vw; top: -5vw; }
+#projects::after  { content: "_";    content: "_" / "";    --k: 34; right: 3vw; bottom: -7vw; animation: blink 1.2s steps(1) infinite; }
+#contact::after   { content: "@";    content: "@" / "";    --k: 44; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+@keyframes blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { #projects::after { animation: none; } }
 
 /* ============================================================
    CONTACT
@@ -649,7 +466,7 @@ img {
     font-family: var(--font-display);
     font-weight: 500;
     font-style: italic;
-    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-size: clamp(2.8rem, 9vw, 7rem);
     line-height: 1.05;
 }
 
@@ -760,33 +577,25 @@ img {
     color: var(--text);
 }
 
-
+.contact-title .dot { color: var(--coral); }
 
 
 /* ============================================================
    FOOTER
 ============================================================ */
 
-.footer {
-    padding: 32px 0 40px;
-    border-top: 1px solid var(--line);
-}
-
-.footer-inner {
-    display: flex;
-    justify-content: space-between;
-    color: var(--text-dim);
-    font-size: 0.85rem;
-}
-
-.footer-note {
-    margin-top: 16px;
-    color: var(--text-dim);
-    opacity: 0.6;
-    font-size: 0.78rem;
-    line-height: 1.6;
-    max-width: 56ch;
-}
+.footer { padding: 80px 0 32px; border-top: 1px solid var(--line); overflow: hidden; }
+.footer-wordmark { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: clamp(2.8rem, 12.5vw, 11rem); line-height: 0.95; letter-spacing: -0.02em; color: rgba(243, 239, 230, 0.07); white-space: nowrap; margin-bottom: 56px; user-select: none; }
+.footer-cols { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 48px; padding-bottom: 56px; }
+.footer-h { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); font-weight: 500; margin-bottom: 18px; }
+.footer-cols ul { list-style: none; display: grid; gap: 10px; }
+.footer-cols a { color: var(--text-dim); text-decoration: none; font-size: 0.95rem; transition: color 0.2s ease; }
+.footer-cols a:hover { color: var(--text); }
+.footer-cols p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.65; max-width: 42ch; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--line); color: var(--text-dim); font-size: 0.82rem; }
+.footer-bottom a { color: var(--text-dim); text-decoration: none; }
+.footer-bottom a:hover { color: var(--coral); }
+.footer-bottom svg { width: 0.9em; height: 0.9em; vertical-align: -1px; margin-left: 4px; }
 
 
 /* ============================================================
@@ -1044,7 +853,6 @@ img {
     }
 }
 
-
 /* ============================================================
    BACK TO TOP
 ============================================================ */
@@ -1092,98 +900,58 @@ img {
     }
 }
 
-
 /* ============================================================
    RESPONSIVE
 ============================================================ */
 
-@media (max-width: 900px) {
-    .hero-inner {
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    .hero-marquee {
-        max-width: 480px;
-        height: 420px;
-        margin: 0 auto;
-    }
-
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .gallery {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-@media (max-width: 720px) {
+@media (max-width: 960px) {
     .nav-links {
-        position: fixed;
-        top: var(--nav-height);
-        left: 0;
-        right: 0;
-        flex-direction: column;
-        gap: 0;
-        background: var(--canvas);
-        border-bottom: 1px solid var(--line);
-        transform: translateY(-8px);
-        opacity: 0;
-        visibility: hidden;
+        position: fixed; top: var(--nav-height); left: 0; right: 0; flex-direction: column; gap: 0;
+        background: var(--canvas); border-bottom: 1px solid var(--line);
+        transform: translateY(-8px); opacity: 0; visibility: hidden;
         transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
     }
-
-    .nav-links.open {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0);
-    }
-
-    .nav-links a {
-        padding: 16px 24px;
-        border-top: 1px solid var(--line);
-    }
-
-    .nav-toggle {
-        display: flex;
-    }
-
-    .section {
-        padding: 84px 0;
-    }
-
-    .gallery {
-        grid-template-columns: 1fr;
-    }
-
-    .hero-actions .btn {
-        flex: 1;
-    }
+    .nav-links.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .nav-links a { padding: 16px 24px; border-top: 1px solid var(--line); font-size: 0.95rem; }
+    .nav-links a::after { display: none; }
+    .nav-toggle { display: flex; }
 }
 
-/* Perf: backdrop-filter and mix-blend-mode are both expensive to
-   recomposite on every scroll frame, which is the main remaining source
-   of scroll roughness on phones. Drop them below this breakpoint — the
-   nav background is already 94% opaque so the blur adds little, and the
-   noise overlay sits at only 3.5% opacity, so losing it isn't noticeable. */
+@media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-marquee { max-width: 480px; height: 420px; margin: 0 auto; }
+    .split { grid-template-columns: 1fr; }
+    .split-head { position: static; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .footer-cols { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 720px) {
-    .nav {
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-    }
-
-    body::before {
-        display: none;
-    }
+    :root { --space-section: 72px; }
+    .hero { padding-bottom: 40px; }
+    .hero-kicker { letter-spacing: 0.1em; }
+    .hero-actions .btn { flex: 1; white-space: nowrap; }
+    /* Gallery: two-up, titles only. Descriptions live in the lightbox, where
+       they are readable at a proper size. */
+    .gallery { gap: 36px 14px; }
+    .card::before { font-size: 0.62rem; margin-bottom: 8px; }
+    .card-thumb { margin-bottom: 10px; }
+    .card h3 { font-size: 0.95rem; }
+    .card h3::after { display: none; }
+    .card p { display: none; }
+    .rows li { grid-template-columns: 36px 1fr; gap: 14px; }
+    .rows .tag-note { grid-column: 2; justify-self: start; }
+    .est .chips { columns: 1; }
+    .footer { padding-top: 56px; }
+    .footer-cols { grid-template-columns: 1fr; gap: 32px; }
+    :is(#about, #work, #interests, #skills, #research, #projects, #contact)::after { font-size: calc(var(--k) * 1.7vw); }
+    /* Perf: the grain overlay is too costly to recomposite on phones. */
+    body::before { display: none; }
 }
+@media (max-width: 480px) { .hero-kicker { font-size: 0.64rem; letter-spacing: 0.08em; } }
+@media (max-width: 340px) { .hero-kicker { font-size: 0.58rem; letter-spacing: 0.05em; } }
 
-@media (max-width: 480px) {
-
-
-    .footer-inner {
-        flex-direction: column;
-        gap: 8px;
-    }
+@media print {
+    .nav, .hero-marquee, .back-to-top { display: none; }
+    body { background: #fff; color: #000; }
 }

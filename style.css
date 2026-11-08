@@ -424,6 +424,8 @@ main { counter-reset: sec; }
 .project-card h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.3rem; transition: color 0.2s ease; }
 .project-card:hover h3 { color: var(--accent); }
 .project-card p { color: var(--fg-dim); font-size: 0.93rem; grid-column: 1; }
+.project-more { padding: 20px 0 0; color: var(--fg-dim); font-size: 0.9rem; }
+.project-more a { color: var(--accent); }
 .project-card .status { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal-text); }
 
 /* SECTION MARKS: one oversized, faint glyph per section, tied to its topic.

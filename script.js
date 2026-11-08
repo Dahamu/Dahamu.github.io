@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateProgress() {
     const scrollTop = window.scrollY;
     const pct = cachedDocHeight > 0 ? (scrollTop / cachedDocHeight) * 100 : 0;
-    if (scrollProgress) scrollProgress.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    if (scrollProgress) scrollProgress.style.transform = 'scaleX(' + Math.min(1, Math.max(0, pct / 100)) + ')';
   }
 
   let resizeDebounce;
@@ -409,6 +409,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (e.key === 'ArrowRight') showGalleryImage(galleryIndex + 1);
     trapLightboxFocus(e);
   });
+
+  /* ---------------- Pause hero marquee off-screen ---------------- */
+  // 24 posters animating forever is wasted work once the hero has scrolled away.
+  const marquee = document.getElementById('heroFrames');
+  if (marquee && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      marquee.classList.toggle('is-paused', !entry.isIntersecting);
+    }).observe(marquee);
+  }
 
   /* ---------------- Copy email button ---------------- */
 

@@ -73,6 +73,7 @@ body {
     font-size: 16px;
     line-height: 1.6;
     overflow-x: hidden;
+    overflow-x: clip; /* same effect, but does not turn body into a scroll container (iOS jank) */
     position: relative;
     /* Removes the default gray flash on tap on mobile browsers. Purely
        cosmetic — the separate :focus-visible rule further down still
@@ -239,7 +240,7 @@ main { counter-reset: sec; }
    performance and read as glassmorphism. */
 .nav.scrolled { background: rgba(24, 25, 29, 0.96); border-bottom-color: var(--line); }
 
-.scroll-progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0%; background: var(--coral); }
+.scroll-progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--coral); transform: scaleX(0); transform-origin: left; will-change: transform; }
 
 .nav-inner {
     width: min(var(--max), calc(100% - 48px));
@@ -950,6 +951,15 @@ main { counter-reset: sec; }
 }
 @media (max-width: 480px) { .hero-kicker { font-size: 0.64rem; letter-spacing: 0.08em; } }
 @media (max-width: 340px) { .hero-kicker { font-size: 0.58rem; letter-spacing: 0.05em; } }
+
+/* Phone performance: no always-running marquee (it sits under a mask, which
+   repaints every frame), no huge outlined glyphs, no clip-path image wipes. */
+.hero-marquee.is-paused .marquee-track { animation-play-state: paused; }
+@media (max-width: 900px) { .hero-marquee .marquee-track { animation: none; will-change: auto; } }
+@media (max-width: 720px) {
+    #work::after, #skills::after, #projects::after, #contact::after { display: none; }
+    .card.reveal .card-thumb img { clip-path: none; }
+}
 
 @media print {
     .nav, .hero-marquee, .back-to-top { display: none; }

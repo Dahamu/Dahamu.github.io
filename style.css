@@ -236,9 +236,9 @@ main { counter-reset: sec; }
     border-bottom: 1px solid transparent;
     transition: background 0.3s ease, border-color 0.3s ease;
 }
-/* Transparent over the hero, solid once scrolled. No blur: it cost scroll
-   performance and read as glassmorphism. */
-.nav.scrolled { background: rgba(24, 25, 29, 0.96); border-bottom-color: var(--line); }
+/* Transparent over the hero, fully solid once scrolled (even 4% see-through
+   let bright posters ghost through the logo and links). No blur either. */
+.nav.scrolled { background: var(--canvas); border-bottom-color: var(--line); }
 
 .scroll-progress { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: var(--coral); transform: scaleX(0); transform-origin: left; will-change: transform; }
 
@@ -250,7 +250,10 @@ main { counter-reset: sec; }
     align-items: center;
     justify-content: space-between;
 }
-.nav-logo { font-family: var(--font-display); font-style: italic; font-weight: 500; font-size: 1.15rem; text-decoration: none; }
+/* Wordmark: same voice as the section labels (Space Grotesk, tracked caps),
+   with a coral dot that echoes the coral full stops in the headlines. */
+.nav-logo { display: inline-flex; align-items: center; gap: 9px; font-family: var(--font-ui); font-weight: 600; font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; }
+.nav-logo::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--coral); }
 .nav-links { display: flex; gap: 28px; }
 .nav-links a { position: relative; text-decoration: none; color: var(--text-dim); font-size: 0.9rem; transition: color 0.2s ease; }
 .nav-links a::after {
